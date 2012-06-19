@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<antlib>
+  <!-- Types -->
+  <typedef name="nexusStagingInfo" classname="org.sonatype.nexus.ant.staging.NexusStagingInfo" />
+  <typedef name="projectInfo" classname="org.sonatype.nexus.ant.staging.ProjectInfo" />
+  <typedef name="connectionInfo" classname="org.sonatype.nexus.ant.staging.ConnectionInfo" />
+  <typedef name="authentication" classname="org.sonatype.nexus.ant.staging.Authentication" />
+  <typedef name="proxy" classname="org.sonatype.nexus.ant.staging.Proxy" />
+
+  <!-- Tasks (full V2) -->
+  <taskdef name="stageLocally" classname="org.sonatype.nexus.ant.staging.StageLocallyTask"/>
+  <taskdef name="stageRemotely" classname="org.sonatype.nexus.ant.staging.StageRemotelyTask"/>
+
+  <!-- Tasks (for manual workflow) -->  
+  <taskdef name="closeStagingRepository" classname="org.sonatype.nexus.ant.staging.CloseStageRepositoryMojo"/>
+  <taskdef name="dropStagingRepository" classname="org.sonatype.nexus.ant.staging.DropStageRepositoryMojo"/>
+  <taskdef name="releaseStagingRepository" classname="org.sonatype.nexus.ant.staging.ReleaseStageRepositoryMojo"/>
+  <taskdef name="promoteStagingRepository" classname="org.sonatype.nexus.ant.staging.PromoteToStageProfileMojo"/>
+</antlib>

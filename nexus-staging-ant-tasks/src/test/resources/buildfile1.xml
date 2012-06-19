@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:staging="antlib:org.sonatype.nexus.ant.staging" name="buildfile1"
+  basedir="${basedir}" default="test">
+
+  <staging:nexusStagingInfo id="test-nexus" stagingDirectory="target/local-staging">
+    <staging:projectInfo groupId="G" artifactId="A"
+      version="V" />
+    <staging:connectionInfo baseUrl="http://nexus.mycorp.com">
+      <staging:authentication username="nexususer"
+        password="nexussecret" />
+      <staging:proxy host="proxy.mycorp.com" port="8080">
+        <staging:authentication username="proxyUser"
+          password="proxySecret" />
+      </staging:proxy>
+    </staging:connectionInfo>
+  </staging:nexusStagingInfo>
+
+  <target name="test" description="Test">
+    <staging:stageLocally>
+      <staging:nexusStagingInfo refid="test-nexus"/>
+      <fileset dir="target/classes" />
+    </staging:stageLocally>
+  </target>
+
+</project>
