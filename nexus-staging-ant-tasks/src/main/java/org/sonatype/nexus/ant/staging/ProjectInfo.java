@@ -1,15 +1,39 @@
 package org.sonatype.nexus.ant.staging;
 
+/**
+ * DTO for project info. These values drives the profile to use (if set) or even the repository to use (if set), those
+ * are the "targeted" modes of Nexus Staging V2. In general, you don't use those two fields (you might set the profileId
+ * though), but you can let Nexus "match" a profile for you, by supplying G:A:V to match against.
+ * 
+ * @author cstamas
+ */
 public class ProjectInfo
 {
+    /**
+     * If set, profile will be selected by the ID supplied by user and no "match" will be done.
+     */
     private String stagingProfileId;
 
+    /**
+     * If set, repository will not be managed, but task will assume it was created by some other entity (targeted
+     * repository mode). In this mode, {@link StageRemotelyTask} will NOT close the staging repository (the one creating
+     * it should close it).
+     */
     private String stagingRepositoryId;
-    
+
+    /**
+     * The groupId to perform profile match against. Have to be set if {@link #stagingProfileId} is not set.
+     */
     private String groupId;
 
+    /**
+     * The artifactId to perform profile match against. Have to be set if {@link #stagingProfileId} is not set.
+     */
     private String artifactId;
 
+    /**
+     * The version to perform profile match against. Have to be set if {@link #stagingProfileId} is not set.
+     */
     private String version;
 
     public String getGroupId()

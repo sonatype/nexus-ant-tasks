@@ -14,9 +14,9 @@ import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
- * Super class of non-RC Actions. These mojos are "plain" non-aggregator ones, and will use the property file from
- * staged repository to get the repository ID they need. This way, you can integrate these mojos in your build directly
- * (ie. to release or promote even).
+ * Super class of Actions. These tasks are callable as part of the build, and will try to use the property file from
+ * locally staged repository to get the repository ID if not configured directly. This way, you can integrate these
+ * tasks in your build directly (ie. to release or promote even from build).
  * 
  * @author cstamas
  */
@@ -24,7 +24,7 @@ public abstract class AbstractStagingActionTask
     extends AbstractStagingTask
 {
     /**
-     * Specifies the (opened) staging repository ID (or multiple ones comma separated) on remote Nexus against which RC
+     * Specifies the staging repository ID (or multiple ones comma separated) on remote Nexus against which RC
      * staging action should happen. If not given, mojo will fail.
      */
     private String stagingRepositoryId;
