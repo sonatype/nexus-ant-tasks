@@ -2,8 +2,6 @@ package org.sonatype.nexus.ant.staging;
 
 import java.io.File;
 
-import org.apache.tools.ant.Project;
-
 /**
  * DTO for Nexus staging info. Example with all bells and whistles:
  * 
