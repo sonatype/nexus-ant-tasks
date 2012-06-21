@@ -18,7 +18,7 @@ import org.sonatype.nexus.client.srv.staging.internal.StagingFeatures;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class AbstractStagingTask
+public abstract class AbstractStagingTask
     extends Task
 {
     /**
@@ -164,7 +164,7 @@ public class AbstractStagingTask
             final org.sonatype.nexus.client.ConnectionInfo connectionInfo =
                 new org.sonatype.nexus.client.ConnectionInfo( baseUrl, authenticationInfo, proxyInfos );
             this.nexusClient = new JerseyNexusClientFactory( StagingFeatures.defaults() ).createFor( connectionInfo );
-            log( "NexusClient created aginst Nexus instance on URL: " + baseUrl.toString() + "." );
+            log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString() + "." );
         }
         catch ( MalformedURLException e )
         {

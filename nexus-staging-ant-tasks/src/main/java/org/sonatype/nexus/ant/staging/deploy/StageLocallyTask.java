@@ -10,26 +10,46 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
-package org.sonatype.nexus.ant.staging;
+package org.sonatype.nexus.ant.staging.deploy;
+
+import java.util.Iterator;
 
 import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.ant.staging.staging.AbstractStagingActionTask;
-import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.resources.FileResource;
 
 /**
- * Releases a single closed Nexus staging repository into a permanent Nexus repository for general consumption.
+ * Perform local staging.
  * 
  * @author cstamas
- * @since 2.1
- * @goal release
  */
-public class ReleaseStageRepositoryMojo
-    extends AbstractStagingActionTask
+public class StageLocallyTask
+    extends AbstractDeployTask
 {
+    private FileSet fileSet;
+
+    public FileSet getFileSet()
+    {
+        return fileSet;
+    }
+
+    public void add( FileSet fileSet )
+    {
+        this.fileSet = fileSet;
+    }
+
     @Override
-    public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
+    @SuppressWarnings( "unchecked" )
+    public void execute()
         throws BuildException
     {
-        stagingWorkflow.releaseStagingRepositories( getDescription(), getStagingRepositoryId() );
+        log( "Staging locally (stagingDirectory=" + getStagingDirectory() + ")..." );
+
+        Iterator<FileResource> files = getFileSet().iterator();
+        while ( files.hasNext() )
+        {
+            final FileResource file = files.next();
+            stageLocally( file.getBaseDir(), file.getName() );
+        }
     }
 }

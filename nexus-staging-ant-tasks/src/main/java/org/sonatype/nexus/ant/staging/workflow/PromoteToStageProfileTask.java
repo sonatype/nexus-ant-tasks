@@ -10,10 +10,11 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
-package org.sonatype.nexus.ant.staging;
+package org.sonatype.nexus.ant.staging.workflow;
+
+import java.util.Arrays;
 
 import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.ant.staging.staging.AbstractStagingActionTask;
 import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
 
 /**
@@ -21,9 +22,8 @@ import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
  * 
  * @author cstamas
  * @since 2.1
- * @goal promote
  */
-public class PromoteToStageProfileMojo
+public class PromoteToStageProfileTask
     extends AbstractStagingActionTask
 {
     /**
@@ -52,6 +52,8 @@ public class PromoteToStageProfileMojo
     public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
         throws BuildException
     {
+        log( "Promoting staging repository with ID=" + Arrays.toString( getStagingRepositoryId() )
+            + " to build profile ID=" + getBuildPromotionProfileId() );
         stagingWorkflow.promoteStagingRepositories( getDescription(), getBuildPromotionProfileId(),
             getStagingRepositoryId() );
     }

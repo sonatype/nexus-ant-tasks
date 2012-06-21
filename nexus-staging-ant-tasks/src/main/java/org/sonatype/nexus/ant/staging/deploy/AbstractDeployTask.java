@@ -66,8 +66,6 @@ public abstract class AbstractDeployTask
      */
     private boolean skipStagingRepositoryClose = false;
 
-    // attributes
-
     // methods
 
     /**
@@ -304,11 +302,6 @@ public abstract class AbstractDeployTask
         else
         {
             log( "Error: Remote staging was unsuccesful!" );
-            // maybe a switch "upload error fail the build?"
-            if ( true )
-            {
-                throw new BuildException( "Remote staging was unsuccesful!" );
-            }
         }
     }
 

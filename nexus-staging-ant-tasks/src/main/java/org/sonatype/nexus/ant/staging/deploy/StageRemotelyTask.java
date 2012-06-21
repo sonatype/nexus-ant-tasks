@@ -10,26 +10,23 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
-package org.sonatype.nexus.ant.staging;
+package org.sonatype.nexus.ant.staging.deploy;
 
 import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.ant.staging.staging.AbstractStagingActionTask;
-import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
 
 /**
- * Closes a Nexus staging repository.
+ * Perform remote staging.
  * 
  * @author cstamas
- * @since 2.1
- * @goal close
  */
-public class CloseStageRepositoryMojo
-    extends AbstractStagingActionTask
+public class StageRemotelyTask
+    extends AbstractDeployTask
 {
     @Override
-    public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
+    public void execute()
         throws BuildException
     {
-        stagingWorkflow.finishStagingRepositories( getDescription(), getStagingRepositoryId() );
+        log( "Staging remotely (baseUrl=" + getConnectionInfo().getBaseUrl() + ")..." );
+        stageRemotely();
     }
 }

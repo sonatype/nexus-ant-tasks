@@ -1,4 +1,4 @@
-package org.sonatype.nexus.ant.staging.staging;
+package org.sonatype.nexus.ant.staging.workflow;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
- * Super class of Actions. These tasks are callable as part of the build, and will try to use the property file from
+ * Super class of Action Tasks. These tasks are callable as part of the build, and will try to use the property file from
  * locally staged repository to get the repository ID if not configured directly. This way, you can integrate these
  * tasks in your build directly (ie. to release or promote even from build).
  * 
@@ -25,7 +25,7 @@ public abstract class AbstractStagingActionTask
 {
     /**
      * Specifies the staging repository ID (or multiple ones comma separated) on remote Nexus against which RC
-     * staging action should happen. If not given, mojo will fail.
+     * staging action should happen. If not given, task will fail.
      */
     private String stagingRepositoryId;
 
@@ -82,9 +82,7 @@ public abstract class AbstractStagingActionTask
         throws BuildException
     {
         createTransport();
-
         final StagingWorkflowV2Service stagingWorkflow = getStagingWorkflowService();
-
         try
         {
             doExecute( stagingWorkflow );
