@@ -64,22 +64,22 @@ public abstract class AbstractDeployTask
 
     // methods
 
-    protected boolean isKeepStagingRepositoryOnFailure()
+    public boolean isKeepStagingRepositoryOnFailure()
     {
         return keepStagingRepositoryOnFailure;
     }
 
-    protected void setKeepStagingRepositoryOnFailure( boolean keepStagingRepositoryOnFailure )
+    public void setKeepStagingRepositoryOnFailure( boolean keepStagingRepositoryOnFailure )
     {
         this.keepStagingRepositoryOnFailure = keepStagingRepositoryOnFailure;
     }
 
-    protected boolean isSkipStagingRepositoryClose()
+    public boolean isSkipStagingRepositoryClose()
     {
         return skipStagingRepositoryClose;
     }
 
-    protected void setSkipStagingRepositoryClose( boolean skipStagingRepositoryClose )
+    public void setSkipStagingRepositoryClose( boolean skipStagingRepositoryClose )
     {
         this.skipStagingRepositoryClose = skipStagingRepositoryClose;
     }
