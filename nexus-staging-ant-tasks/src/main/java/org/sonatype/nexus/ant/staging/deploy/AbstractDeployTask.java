@@ -54,19 +54,35 @@ public abstract class AbstractDeployTask
      * Controls whether the plugin remove or keep the staging repository that performed an IO exception during upload,
      * hence, it's contents are partial Defaults to {{false}}. If {{true}}, even in case of upload failure, the staging
      * repository (with partial content) will be left as is, left to the user to do whatever he wants.
-     * 
-     * @parameter expression="${keepStagingRepositoryOnFailure}"
      */
     private boolean keepStagingRepositoryOnFailure = false;
 
     /**
      * Set this to {@code true} to bypass staging repository closing at the workflow end.
-     * 
-     * @parameter expression="${skipStagingRepositoryClose}"
      */
     private boolean skipStagingRepositoryClose = false;
 
     // methods
+
+    protected boolean isKeepStagingRepositoryOnFailure()
+    {
+        return keepStagingRepositoryOnFailure;
+    }
+
+    protected void setKeepStagingRepositoryOnFailure( boolean keepStagingRepositoryOnFailure )
+    {
+        this.keepStagingRepositoryOnFailure = keepStagingRepositoryOnFailure;
+    }
+
+    protected boolean isSkipStagingRepositoryClose()
+    {
+        return skipStagingRepositoryClose;
+    }
+
+    protected void setSkipStagingRepositoryClose( boolean skipStagingRepositoryClose )
+    {
+        this.skipStagingRepositoryClose = skipStagingRepositoryClose;
+    }
 
     /**
      * Stages an artifact from a particular file locally.
