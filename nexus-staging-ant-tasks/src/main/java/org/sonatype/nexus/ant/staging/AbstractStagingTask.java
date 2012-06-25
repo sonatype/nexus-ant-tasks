@@ -12,6 +12,7 @@ import org.sonatype.nexus.client.NexusClient;
 import org.sonatype.nexus.client.Protocol;
 import org.sonatype.nexus.client.ProxyInfo;
 import org.sonatype.nexus.client.UsernamePasswordAuthenticationInfo;
+import org.sonatype.nexus.client.internal.Features;
 import org.sonatype.nexus.client.internal.JerseyNexusClientFactory;
 import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
 import org.sonatype.nexus.client.srv.staging.internal.StagingFeatures;
@@ -163,7 +164,8 @@ public abstract class AbstractStagingTask
 
             final org.sonatype.nexus.client.ConnectionInfo connectionInfo =
                 new org.sonatype.nexus.client.ConnectionInfo( baseUrl, authenticationInfo, proxyInfos );
-            this.nexusClient = new JerseyNexusClientFactory( StagingFeatures.defaults() ).createFor( connectionInfo );
+            this.nexusClient =
+                new JerseyNexusClientFactory( Features.defaults().combine( new StagingFeatures() ) ).createFor( connectionInfo );
             log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString() + "." );
         }
         catch ( MalformedURLException e )
