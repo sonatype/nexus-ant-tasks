@@ -12,10 +12,9 @@ import org.sonatype.nexus.client.NexusClient;
 import org.sonatype.nexus.client.Protocol;
 import org.sonatype.nexus.client.ProxyInfo;
 import org.sonatype.nexus.client.UsernamePasswordAuthenticationInfo;
-import org.sonatype.nexus.client.internal.Features;
 import org.sonatype.nexus.client.internal.JerseyNexusClientFactory;
-import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
-import org.sonatype.nexus.client.srv.staging.internal.StagingFeatures;
+import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
+import org.sonatype.nexus.client.staging.internal.JerseyStagingWorkflowV2SubsystemFactory;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -165,7 +164,7 @@ public abstract class AbstractStagingTask
             final org.sonatype.nexus.client.ConnectionInfo connectionInfo =
                 new org.sonatype.nexus.client.ConnectionInfo( baseUrl, authenticationInfo, proxyInfos );
             this.nexusClient =
-                new JerseyNexusClientFactory( Features.defaults().combine( new StagingFeatures() ) ).createFor( connectionInfo );
+                new JerseyNexusClientFactory( new JerseyStagingWorkflowV2SubsystemFactory() ).createFor( connectionInfo );
             log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString() + "." );
         }
         catch ( MalformedURLException e )
@@ -191,17 +190,17 @@ public abstract class AbstractStagingTask
     protected StagingWorkflowV2Service getStagingWorkflowService()
         throws BuildException
     {
-        final StagingWorkflowV2Service stagingService = getNexusClient().getSubsystem( StagingWorkflowV2Service.class );
-
-        if ( stagingService == null )
+        try
+        {
+            return getNexusClient().getSubsystem( StagingWorkflowV2Service.class );
+        }
+        catch ( IllegalArgumentException e )
         {
             throw new BuildException(
                 "Nexus instance at base URL "
                     + getNexusClient().getConnectionInfo().getBaseUrl().toString()
                     + " does not support Staging V2 (wrong edition, wrong version or nexus-staging-plugin is not installed)! Reported status: "
-                    + getNexusClient().getConnectionStatus() );
+                    + getNexusClient().getNexusStatus(), e );
         }
-
-        return stagingService;
     }
 }

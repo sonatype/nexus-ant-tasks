@@ -15,7 +15,7 @@ package org.sonatype.nexus.ant.staging.workflow;
 import java.util.Arrays;
 
 import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
+import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
 
 /**
  * Closes a Nexus staging repository.

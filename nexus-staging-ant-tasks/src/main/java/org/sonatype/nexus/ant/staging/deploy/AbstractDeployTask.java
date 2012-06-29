@@ -23,9 +23,9 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
 import org.sonatype.nexus.client.NexusStatus;
-import org.sonatype.nexus.client.srv.staging.Profile;
-import org.sonatype.nexus.client.srv.staging.ProfileMatchingParameters;
-import org.sonatype.nexus.client.srv.staging.StagingWorkflowV2Service;
+import org.sonatype.nexus.client.staging.Profile;
+import org.sonatype.nexus.client.staging.ProfileMatchingParameters;
+import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
 
@@ -178,7 +178,7 @@ public abstract class AbstractDeployTask
         try
         {
             log( "Performing staging against Nexus on URL " + getNexusUrl() );
-            final NexusStatus nexusStatus = getNexusClient().getConnectionStatus();
+            final NexusStatus nexusStatus = getNexusClient().getNexusStatus();
             log( String.format( " * Remote Nexus reported itself as version %s and edition \"%s\"",
                 nexusStatus.getVersion(), nexusStatus.getEditionLong() ) );
             final StagingWorkflowV2Service stagingService = getStagingWorkflowService();
