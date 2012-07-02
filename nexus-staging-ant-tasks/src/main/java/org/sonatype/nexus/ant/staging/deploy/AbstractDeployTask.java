@@ -22,7 +22,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
-import org.sonatype.nexus.client.NexusStatus;
+import org.sonatype.nexus.client.core.NexusStatus;
 import org.sonatype.nexus.client.staging.Profile;
 import org.sonatype.nexus.client.staging.ProfileMatchingParameters;
 import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
