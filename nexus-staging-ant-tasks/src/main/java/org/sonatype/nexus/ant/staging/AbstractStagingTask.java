@@ -208,11 +208,10 @@ public abstract class AbstractStagingTask
         }
         catch ( IllegalArgumentException e )
         {
-            throw new BuildException(
-                "Nexus instance at base URL "
-                    + getNexusClient().getConnectionInfo().getBaseUrl().toString()
-                    + " does not support Staging V2 (wrong edition, wrong version or nexus-staging-plugin is not installed)! Reported status: "
-                    + getNexusClient().getNexusStatus(), e );
+            throw new BuildException( "Nexus instance at base URL "
+                + getNexusClient().getConnectionInfo().getBaseUrl().toString()
+                + " does not support Staging V2 Reported status: " + getNexusClient().getNexusStatus() + " reason:"
+                + e.getMessage(), e );
         }
     }
 }
