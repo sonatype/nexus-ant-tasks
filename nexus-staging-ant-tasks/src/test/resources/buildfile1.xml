@@ -16,7 +16,7 @@
 <project xmlns:staging="antlib:org.sonatype.nexus.ant.staging" name="buildfile1"
   basedir="${basedir}" default="test">
 
-  <staging:nexusStagingInfo id="test-nexus" stagingDirectory="target/local-staging">
+  <staging:nexusStagingInfo id="test-nexus" stagingDirectory="target/local-staging-ut">
     <staging:projectInfo groupId="G" artifactId="A"
       version="V" />
     <staging:connectionInfo baseUrl="http://nexus.mycorp.com">

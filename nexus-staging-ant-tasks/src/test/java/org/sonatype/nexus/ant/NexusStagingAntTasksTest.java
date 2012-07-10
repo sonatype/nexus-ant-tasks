@@ -27,7 +27,7 @@ public class NexusStagingAntTasksTest
     public void testSimple()
     {
         executeTarget( "test" );
-        assertTrue( "Message was not logged but should.", getLog().contains( "local-staging" ) );
-        assertTrue( "Local staging directory should exists.", new File( "target/local-staging" ).isDirectory() );
+        assertTrue( "Message was not logged but should.", getLog().contains( "local-staging-ut" ) );
+        assertTrue( "Local staging directory should exists.", new File( "target/local-staging-ut" ).isDirectory() );
     }
 }

@@ -44,7 +44,7 @@
 		<!--Stage locally the built artifacts -->
 		<staging:stageLocally>
 			<staging:nexusStagingInfo refid="target-nexus" />
-			<fileset dir="target" includes="*.jar" />
+			<fileset dir="target/local-repo" includes="**/*.*" />
 		</staging:stageLocally>
 		<!-- Now shoot them remotely (this zaps and closes staging repository) -->
 		<staging:stageRemotely>
