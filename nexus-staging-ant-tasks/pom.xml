@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.sonatype.nexus.client</groupId>
       <artifactId>nexus-client-core</artifactId>
-      <version>${nexus-client.version}</version>
+      <version>${nexus.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sonatype.nexus.staging</groupId>
