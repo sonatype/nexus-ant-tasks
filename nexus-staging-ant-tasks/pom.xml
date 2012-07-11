@@ -29,9 +29,9 @@
       <version>${nexus-client.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.sonatype.nexus.client</groupId>
-      <artifactId>nexus-client-staging</artifactId>
-      <version>${nexus-client.version}</version>
+      <groupId>com.sonatype.nexus.staging</groupId>
+      <artifactId>nexus-staging-client</artifactId>
+      <version>2.1-SNAPSHOT</version>
     </dependency>
 
     <!-- Logging -->

@@ -15,7 +15,7 @@ package org.sonatype.nexus.ant.staging.workflow;
 import java.util.Arrays;
 
 import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
+import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
 /**
  * Promotes a closed Nexus staging repository into a Nexus Build Promotion Profile.

@@ -23,10 +23,10 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
 import org.sonatype.nexus.client.core.NexusStatus;
-import org.sonatype.nexus.client.staging.Profile;
-import org.sonatype.nexus.client.staging.ProfileMatchingParameters;
-import org.sonatype.nexus.client.staging.StagingWorkflowV2Service;
 
+import com.sonatype.nexus.staging.client.Profile;
+import com.sonatype.nexus.staging.client.ProfileMatchingParameters;
+import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
