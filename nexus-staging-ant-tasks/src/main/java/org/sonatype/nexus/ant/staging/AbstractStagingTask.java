@@ -185,7 +185,7 @@ public abstract class AbstractStagingTask
         }
         catch ( UniformInterfaceException e )
         {
-            throw new BuildException( "Malformed Nexus base URL or it does not points to a valid Nexus location !", e );
+            throw new BuildException( "Nexus base URL does not point to a valid Nexus location: " + e.getMessage(), e );
         }
     }
 
