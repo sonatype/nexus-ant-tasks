@@ -204,7 +204,6 @@ public abstract class AbstractDeployTask
                     stagingService.startStaging( stagingProfile, "Started by nexus-staging-ant-tasks", null );
                 managedStagingRepositoryId = stagingRepositoryId;
                 log( " * Created staging repository with ID \"" + stagingRepositoryId + "\"." );
-
             }
             else
             {
@@ -213,6 +212,26 @@ public abstract class AbstractDeployTask
                 log( " * Using non-managed staging repository with ID \"" + stagingRepositoryId
                     + "\" (we are NOT managing it)." ); // we will not close it! This might be created by some
                                                         // other automated component
+            }
+
+            // if this is 2nd or any subsequent staging attempt, the file will be left from previous run
+            // but, the file contents will not be valid anyway, as we are doing next attempt. So
+            // just handle it gracefully by removing the file and NOT upload it (the one with stale info, as we just
+            // created a new repo but props points to old repo).
+            final File stagingPropertiesFile = new File( getStagingDirectory(), STAGING_REPOSITORY_PROPERTY_FILE_NAME );
+            if ( stagingPropertiesFile.isFile() )
+            {
+                log( " * Removing previous staging properties file (is this subsequent staging attempt?)." );
+                try
+                {
+                    FileUtils.forceDelete( stagingPropertiesFile );
+                }
+                catch ( IOException e )
+                {
+                    throw new BuildException(
+                        "Error when deleting staging properties file leftover from previous attempt: "
+                            + stagingPropertiesFile.getAbsolutePath(), e );
+                }
             }
 
             return stagingService.startedRepositoryBaseUrl( stagingProfile, stagingRepositoryId );
