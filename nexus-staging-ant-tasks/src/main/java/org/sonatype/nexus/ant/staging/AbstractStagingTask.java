@@ -28,7 +28,7 @@ import org.sonatype.nexus.client.rest.jersey.JerseyNexusClientFactory;
 
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 import com.sonatype.nexus.staging.client.rest.JerseyStagingWorkflowV2SubsystemFactory;
-import com.sun.jersey.api.client.UniformInterfaceException;
+
 
 public abstract class AbstractStagingTask
     extends Task
@@ -183,9 +183,9 @@ public abstract class AbstractStagingTask
         {
             throw new BuildException( "Malformed Nexus base URL!", e );
         }
-        catch ( UniformInterfaceException e )
+        catch ( Exception e )
         {
-            throw new BuildException( "Nexus base URL does not point to a valid Nexus location: " + e.getMessage(), e );
+            throw new BuildException( "Nexus connection problem: " + e.getMessage(), e );
         }
     }
 
