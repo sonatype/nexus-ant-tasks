@@ -15,15 +15,17 @@ package org.sonatype.nexus.ant.staging.workflow;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
 import org.sonatype.nexus.ant.staging.deploy.AbstractDeployTask;
+import org.sonatype.nexus.client.core.NexusErrorMessageException;
 
+import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Super class of Action Tasks. These tasks are callable as part of the build, and will try to use the property file from
@@ -99,13 +101,17 @@ public abstract class AbstractStagingActionTask
         {
             doExecute( stagingWorkflow );
         }
-        catch ( UniformInterfaceException e )
+        catch ( NexusErrorMessageException e )
         {
-            // dump the response until no smarter error handling
-            log( e.getResponse().getEntity( String.class ) );
+            NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
             // fail the build
-            throw new BuildException( "Could not perform action: "
-                + e.getResponse().getClientResponseStatus().getReasonPhrase(), e );
+            throw new BuildException( "Could not perform action: Nexus ErrorResponse received!", e );
+        }
+        catch ( StagingRuleFailuresException e )
+        {
+            StagingRuleFailuresException.dumpErrors( new PrintWriter( System.out, true ), e );
+            // fail the build
+            throw new BuildException( "Could not perform action: there are failing staging rules!", e );
         }
     }
 
