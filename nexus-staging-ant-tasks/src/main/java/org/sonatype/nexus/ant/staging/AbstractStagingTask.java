@@ -187,6 +187,10 @@ public abstract class AbstractStagingTask
         {
             throw new BuildException( "Nexus base URL does not point to a valid Nexus location: " + e.getMessage(), e );
         }
+        catch ( Exception e )
+        {
+            throw new BuildException( "Nexus connection problem: " + e.getMessage(), e );
+        }
     }
 
     protected NexusClient getNexusClient()

@@ -15,6 +15,7 @@ package org.sonatype.nexus.ant.staging.deploy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
@@ -22,12 +23,13 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
+import org.sonatype.nexus.client.core.NexusErrorMessageException;
 import org.sonatype.nexus.client.core.NexusStatus;
 
 import com.sonatype.nexus.staging.client.Profile;
 import com.sonatype.nexus.staging.client.ProfileMatchingParameters;
+import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
-import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Abstract class for deploy related mojos.
@@ -236,9 +238,11 @@ public abstract class AbstractDeployTask
 
             return stagingService.startedRepositoryBaseUrl( stagingProfile, stagingRepositoryId );
         }
-        catch ( UniformInterfaceException e )
+        catch ( NexusErrorMessageException e )
         {
-            throw new BuildException( "Staging workflow failure!", e );
+            NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
+            // fail the build
+            throw new BuildException( "Could not perform action: Nexus ErrorResponse received!", e );
         }
     }
 
@@ -282,12 +286,21 @@ public abstract class AbstractDeployTask
                 }
                 log( "Finished staging against Nexus " + ( successful ? "with success." : "with failure." ) );
             }
-            catch ( UniformInterfaceException e )
+            catch ( NexusErrorMessageException e )
             {
                 log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
-                throw new BuildException(
-                    "Error after upload while managing staging repository! Staging repository in question is "
-                        + managedStagingRepositoryId, e );
+                NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
+                // fail the build
+                throw new BuildException( "Could not perform action agains repository \"" + managedStagingRepositoryId
+                    + "\": Nexus ErrorResponse received!", e );
+            }
+            catch ( StagingRuleFailuresException e )
+            {
+                log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
+                StagingRuleFailuresException.dumpErrors( new PrintWriter( System.out, true ), e );
+                // fail the build
+                throw new BuildException( "Could not perform  action agains repository \"" + managedStagingRepositoryId
+                    + "\": there are failing staging rules!", e );
             }
         }
 
