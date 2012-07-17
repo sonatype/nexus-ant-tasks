@@ -21,6 +21,7 @@ import java.util.Properties;
 import org.apache.tools.ant.BuildException;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
+import org.sonatype.nexus.ant.staging.ErrorDumper;
 import org.sonatype.nexus.ant.staging.deploy.AbstractDeployTask;
 import org.sonatype.nexus.client.core.NexusErrorMessageException;
 
@@ -28,8 +29,8 @@ import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
 /**
- * Super class of Action Tasks. These tasks are callable as part of the build, and will try to use the property file from
- * locally staged repository to get the repository ID if not configured directly. This way, you can integrate these
+ * Super class of Action Tasks. These tasks are callable as part of the build, and will try to use the property file
+ * from locally staged repository to get the repository ID if not configured directly. This way, you can integrate these
  * tasks in your build directly (ie. to release or promote even from build).
  * 
  * @author cstamas
@@ -38,8 +39,8 @@ public abstract class AbstractStagingActionTask
     extends AbstractStagingTask
 {
     /**
-     * Specifies the staging repository ID (or multiple ones comma separated) on remote Nexus against which RC
-     * staging action should happen. If not given, task will fail.
+     * Specifies the staging repository ID (or multiple ones comma separated) on remote Nexus against which RC staging
+     * action should happen. If not given, task will fail.
      */
     private String stagingRepositoryId;
 
@@ -103,13 +104,13 @@ public abstract class AbstractStagingActionTask
         }
         catch ( NexusErrorMessageException e )
         {
-            NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
+            ErrorDumper.dumpErrors( this, e );
             // fail the build
             throw new BuildException( "Could not perform action: Nexus ErrorResponse received!", e );
         }
         catch ( StagingRuleFailuresException e )
         {
-            StagingRuleFailuresException.dumpErrors( new PrintWriter( System.out, true ), e );
+            ErrorDumper.dumpErrors( this, e );
             // fail the build
             throw new BuildException( "Could not perform action: there are failing staging rules!", e );
         }

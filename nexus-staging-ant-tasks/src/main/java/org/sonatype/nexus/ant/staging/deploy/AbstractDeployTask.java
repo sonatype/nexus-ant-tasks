@@ -23,6 +23,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
+import org.sonatype.nexus.ant.staging.ErrorDumper;
 import org.sonatype.nexus.client.core.NexusErrorMessageException;
 import org.sonatype.nexus.client.core.NexusStatus;
 
@@ -240,7 +241,7 @@ public abstract class AbstractDeployTask
         }
         catch ( NexusErrorMessageException e )
         {
-            NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
+            ErrorDumper.dumpErrors( this, e );
             // fail the build
             throw new BuildException( "Could not perform action: Nexus ErrorResponse received!", e );
         }
@@ -334,7 +335,7 @@ public abstract class AbstractDeployTask
             catch ( NexusErrorMessageException e )
             {
                 log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
-                NexusErrorMessageException.dumpErrors( new PrintWriter( System.out, true ), e );
+                ErrorDumper.dumpErrors( this, e );
                 // fail the build
                 throw new BuildException( "Could not perform action agains repository \"" + managedStagingRepositoryId
                     + "\": Nexus ErrorResponse received!", e );
@@ -342,7 +343,7 @@ public abstract class AbstractDeployTask
             catch ( StagingRuleFailuresException e )
             {
                 log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
-                StagingRuleFailuresException.dumpErrors( new PrintWriter( System.out, true ), e );
+                ErrorDumper.dumpErrors( this, e );
                 // fail the build
                 throw new BuildException( "Could not perform  action agains repository \"" + managedStagingRepositoryId
                     + "\": there are failing staging rules!", e );
