@@ -19,6 +19,8 @@ import java.util.Map;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.sonatype.nexus.ant.staging.deploy.StageRemotelyTask;
+import org.sonatype.nexus.ant.staging.workflow.CloseStageRepositoryTask;
 import org.sonatype.nexus.client.core.NexusClient;
 import org.sonatype.nexus.client.rest.BaseUrl;
 import org.sonatype.nexus.client.rest.Protocol;
@@ -44,6 +46,13 @@ public abstract class AbstractStagingTask
      */
     private String actionMessage = "Performed by nexus-staging-ant-task";
 
+    /**
+     * Controls whether the staging repository is kept or not (it will be dropped) in case of staging rule failure when
+     * "close" action is performed against it. This is applied in both cases, {@link StageRemotelyTask} and
+     * {@link CloseStageRepositoryTask} invocations.
+     */
+    private boolean keepStagingRepositoryOnCloseRuleFailure = false;
+
     // attributes
 
     public String getActionMessage()
@@ -54,6 +63,16 @@ public abstract class AbstractStagingTask
     public void setActionMessage( String actionMessage )
     {
         this.actionMessage = actionMessage;
+    }
+
+    public boolean isKeepStagingRepositoryOnCloseRuleFailure()
+    {
+        return keepStagingRepositoryOnCloseRuleFailure;
+    }
+
+    public void setKeepStagingRepositoryOnCloseRuleFailure( boolean keepStagingRepositoryOnCloseRuleFailure )
+    {
+        this.keepStagingRepositoryOnCloseRuleFailure = keepStagingRepositoryOnCloseRuleFailure;
     }
 
     // children/refs

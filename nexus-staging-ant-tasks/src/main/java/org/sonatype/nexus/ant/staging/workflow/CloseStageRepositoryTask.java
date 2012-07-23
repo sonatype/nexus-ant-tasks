@@ -15,7 +15,9 @@ package org.sonatype.nexus.ant.staging.workflow;
 import java.util.Arrays;
 
 import org.apache.tools.ant.BuildException;
+import org.sonatype.nexus.ant.staging.ErrorDumper;
 
+import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
 /**
@@ -31,7 +33,24 @@ public class CloseStageRepositoryTask
     public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
         throws BuildException
     {
-        log( "Closing staging repository with ID=" + Arrays.toString( getStagingRepositoryId() ) );
-        stagingWorkflow.finishStagingRepositories( getDescription(), getStagingRepositoryId() );
+        final String[] stagingRepositoryIds = getStagingRepositoryId();
+        try
+        {
+            log( "Closing staging repository with ID=" + Arrays.toString( stagingRepositoryIds ) );
+            stagingWorkflow.finishStagingRepositories( getDescription(), stagingRepositoryIds );
+        }
+        catch ( StagingRuleFailuresException e )
+        {
+            // report staging repository failures
+            ErrorDumper.dumpErrors( this, e );
+            // drop the repository (this will break exception chain if there's new failure, like network)
+            if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
+            {
+                stagingWorkflow.dropStagingRepositories( "Staging rules failed on closing staging repositories: "
+                    + Arrays.toString( stagingRepositoryIds ), stagingRepositoryIds );
+            }
+            // fail the build
+            throw new BuildException( "Could not perform action: there are failing staging rules!", e );
+        }
     }
 }
