@@ -18,6 +18,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildFileTest;
 import org.apache.tools.ant.Task;
 import org.junit.rules.Verifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.ant.staging.ErrorDumper;
 import org.sonatype.nexus.client.core.NexusErrorMessageException;
 
@@ -33,6 +35,8 @@ import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 public class PreparedVerifier
     extends BuildFileTest
 {
+    protected final Logger logger = LoggerFactory.getLogger( getClass() );
+
     private final File baseDir;
 
     private final String projectGroupId;
@@ -109,6 +113,10 @@ public class PreparedVerifier
                 }, (NexusErrorMessageException) c );
                 throw e;
             }
+        } 
+        finally 
+        {
+	      logger.info( getFullLog() );
         }
     }
 }
