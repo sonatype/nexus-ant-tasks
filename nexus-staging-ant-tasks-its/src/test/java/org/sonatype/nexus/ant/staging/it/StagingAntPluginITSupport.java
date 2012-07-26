@@ -133,6 +133,7 @@ public abstract class StagingAntPluginITSupport
             context.setProperty( "basedir", baseDir.getAbsolutePath() );
             context.setProperty( "build-basedir", baseDir.getAbsolutePath() );
             context.setProperty( "dist", dist );
+            context.setProperty( "testId", testId );
             context.setProperty( "itproject.groupId", projectGroupId );
             context.setProperty( "itproject.artifactId", projectArtifactId );
             context.setProperty( "itproject.version", projectVersion );

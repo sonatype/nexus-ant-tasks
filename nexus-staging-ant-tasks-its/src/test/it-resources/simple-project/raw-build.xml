@@ -15,7 +15,7 @@
 -->
 <project xmlns:staging="antlib:org.sonatype.nexus.ant.staging" name="simple-project" basedir="${build-basedir}">
 
-	<staging:nexusStagingInfo id="local-nexus" stagingDirectory="target/local-staging">
+	<staging:nexusStagingInfo id="local-nexus" stagingDirectory="target/local-staging-${testId}">
 		<staging:projectInfo groupId="${itproject.groupId}" artifactId="${itproject.artifactId}" version="${itproject.version}" />
 		<staging:connectionInfo baseUrl="http://localhost:${nexus.port}/nexus">
 			<staging:authentication username="deployment" password="deployment123" />
