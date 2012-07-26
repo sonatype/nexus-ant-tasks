@@ -15,7 +15,6 @@ package org.sonatype.nexus.ant.staging.workflow;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
