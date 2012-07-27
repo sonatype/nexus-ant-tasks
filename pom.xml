@@ -99,6 +99,8 @@
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
+    <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
+    <arguments></arguments>
   </properties>
 
   <modules>
