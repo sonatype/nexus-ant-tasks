@@ -15,7 +15,6 @@ package org.sonatype.nexus.ant.staging.deploy;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Properties;
 
 import org.apache.tools.ant.BuildException;
@@ -306,8 +305,28 @@ public abstract class AbstractDeployTask
                 {
                     if ( successful )
                     {
-                        log( " * Closing staging repository with ID \"" + managedStagingRepositoryId + "\"." );
-                        stagingService.finishStaging( stagingProfile, managedStagingRepositoryId, getDescription() );
+                        try
+                        {
+                            log( " * Closing staging repository with ID \"" + managedStagingRepositoryId + "\"." );
+                            stagingService.finishStaging( stagingProfile, managedStagingRepositoryId, getDescription() );
+                        }
+                        catch ( StagingRuleFailuresException e )
+                        {
+                            log( "Error while trying to close staging repository with ID \""
+                                + managedStagingRepositoryId + "\"." );
+                            ErrorDumper.dumpErrors( this, e );
+                            // drop the repository (this will break exception chain if there's new failure, like
+                            // network)
+                            if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
+                            {
+                                stagingService.dropStagingRepositories(
+                                    "Staging rules failed on closing staging repository: " + managedStagingRepositoryId,
+                                    managedStagingRepositoryId );
+                            }
+                            // fail the build
+                            throw new BuildException( "Could not perform  action agains repository \""
+                                + managedStagingRepositoryId + "\": there are failing staging rules!", e );
+                        }
                     }
                     else
                     {
@@ -339,14 +358,6 @@ public abstract class AbstractDeployTask
                 // fail the build
                 throw new BuildException( "Could not perform action agains repository \"" + managedStagingRepositoryId
                     + "\": Nexus ErrorResponse received!", e );
-            }
-            catch ( StagingRuleFailuresException e )
-            {
-                log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
-                ErrorDumper.dumpErrors( this, e );
-                // fail the build
-                throw new BuildException( "Could not perform  action agains repository \"" + managedStagingRepositoryId
-                    + "\": there are failing staging rules!", e );
             }
         }
 
