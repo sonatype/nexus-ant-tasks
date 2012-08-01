@@ -319,9 +319,16 @@ public abstract class AbstractDeployTask
                             // network)
                             if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
                             {
+                                log( "Dropping failed staging repository with ID \"" + managedStagingRepositoryId
+                                    + "\"." );
                                 stagingService.dropStagingRepositories(
                                     "Staging rules failed on closing staging repository: " + managedStagingRepositoryId,
                                     managedStagingRepositoryId );
+                            }
+                            else
+                            {
+                                log( "Not dropping failed staging repository with ID \"" + managedStagingRepositoryId
+                                    + "\"." );
                             }
                             // fail the build
                             throw new BuildException( "Could not perform  action agains repository \""

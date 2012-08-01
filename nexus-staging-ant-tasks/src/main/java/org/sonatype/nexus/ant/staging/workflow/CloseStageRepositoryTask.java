@@ -46,8 +46,14 @@ public class CloseStageRepositoryTask
             // drop the repository (this will break exception chain if there's new failure, like network)
             if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
             {
+                log( "Dropping failed staging repository with ID \"" + Arrays.toString( stagingRepositoryIds ) + "\"." );
                 stagingWorkflow.dropStagingRepositories( "Staging rules failed on closing staging repositories: "
                     + Arrays.toString( stagingRepositoryIds ), stagingRepositoryIds );
+            }
+            else
+            {
+                log( "Not dropping failed staging repository with ID \"" + Arrays.toString( stagingRepositoryIds )
+                    + "\"." );
             }
             // fail the build
             throw new BuildException( "Could not perform action: there are failing staging rules!", e );
