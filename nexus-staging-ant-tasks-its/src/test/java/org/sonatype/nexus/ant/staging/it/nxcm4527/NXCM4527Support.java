@@ -41,13 +41,18 @@ public abstract class NXCM4527Support
     @Inject
     private FileTaskBuilder fileTaskBuilder;
 
+    public NXCM4527Support( final String nexusBundleCoordinates )
+    {
+        super( nexusBundleCoordinates );
+    }
+
     @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
         // TODO: (cstamas) I promised to Alin to change this "old way of doing things" to use of REST API that would
         // configure Nexus properly once the Security and Staging Management Nexus Client subsystems are done.
         return super.configureNexus( configuration ).addOverlays(
-            fileTaskBuilder.copy().directory( file( resolveTestFile( "preset-nexus" ) ) ).to().directory(
+            fileTaskBuilder.copy().directory( file( testData().resolveFile( "preset-nexus" ) ) ).to().directory(
                 path( "sonatype-work/nexus/conf" ) ) );
     }
 
