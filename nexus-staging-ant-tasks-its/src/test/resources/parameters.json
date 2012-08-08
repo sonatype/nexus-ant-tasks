@@ -1,0 +1,5 @@
+[
+    [ "com.sonatype.nexus:nexus-professional:zip:bundle:2.1" ],
+    [ "com.sonatype.nexus:nexus-professional:zip:bundle:2.1.1" ],
+    [ "com.sonatype.nexus:nexus-professional:zip:bundle" ]
+]

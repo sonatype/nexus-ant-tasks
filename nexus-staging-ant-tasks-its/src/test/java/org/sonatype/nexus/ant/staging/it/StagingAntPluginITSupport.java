@@ -13,6 +13,7 @@
 package org.sonatype.nexus.ant.staging.it;
 
 import static org.sonatype.nexus.client.rest.BaseUrl.baseUrlFrom;
+import static org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy.Strategy.EACH_TEST;
 import static org.sonatype.sisu.filetasks.builder.FileRef.file;
 
 import java.io.File;
@@ -29,22 +30,18 @@ import org.junit.rules.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
-import org.sonatype.nexus.bundle.launcher.NexusRunningITSupport;
-import org.sonatype.nexus.bundle.launcher.NexusStartAndStopStrategy;
-import org.sonatype.nexus.bundle.launcher.NexusStartAndStopStrategy.Strategy;
-import org.sonatype.nexus.bundle.launcher.support.NexusBundleResolver;
 import org.sonatype.nexus.client.core.NexusClient;
 import org.sonatype.nexus.client.rest.NexusClientFactory;
 import org.sonatype.nexus.client.rest.UsernamePasswordAuthenticationInfo;
 import org.sonatype.nexus.mindexer.client.MavenIndexer;
 import org.sonatype.nexus.mindexer.client.SearchResponse;
-import org.sonatype.sisu.bl.support.resolver.BundleResolver;
+import org.sonatype.nexus.testsuite.support.NexusRunningITSupport;
+import org.sonatype.nexus.testsuite.support.NexusRunningParametrizedITSupport;
+import org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy;
 import org.sonatype.sisu.filetasks.FileTaskBuilder;
 import org.sonatype.sisu.goodies.common.Time;
 
 import com.google.common.base.Throwables;
-import com.google.inject.Binder;
-import com.google.inject.name.Names;
 import com.sonatype.nexus.staging.client.Profile;
 import com.sonatype.nexus.staging.client.StagingRepository;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
@@ -54,9 +51,9 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
  * 
  * @author cstamas
  */
-@NexusStartAndStopStrategy( Strategy.EACH_TEST )
+@NexusStartAndStopStrategy( EACH_TEST )
 public abstract class StagingAntPluginITSupport
-    extends NexusRunningITSupport
+    extends NexusRunningParametrizedITSupport
 {
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
@@ -71,27 +68,16 @@ public abstract class StagingAntPluginITSupport
 
     private NexusClient nexusDeploymentClient;
 
+    public StagingAntPluginITSupport( final String nexusBundleCoordinates )
+    {
+        super( nexusBundleCoordinates );
+    }
+
     @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
         return super.configureNexus( configuration ).setSystemProperty( "nexus.createTrialLicense",
             Boolean.TRUE.toString() );
-    }
-
-    @Override
-    public void configure( final Binder binder )
-    {
-        super.configure( binder );
-        binder.bind( BundleResolver.class ).annotatedWith(
-            Names.named( NexusBundleResolver.FALLBACK_NEXUS_BUNDLE_RESOLVER ) ).toInstance( new BundleResolver()
-        {
-            @Override
-            public File resolve()
-            {
-                return resolveFromDependencyManagement( "com.sonatype.nexus", "nexus-professional", null, null, null,
-                    null );
-            }
-        } );
     }
 
     @Before
