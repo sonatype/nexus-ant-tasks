@@ -14,11 +14,16 @@ package org.sonatype.nexus.ant.staging.it;
 
 import static org.sonatype.nexus.client.rest.BaseUrl.baseUrlFrom;
 import static org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy.Strategy.EACH_TEST;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.firstAvailableTestParameters;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.systemTestParameters;
+import static org.sonatype.nexus.testsuite.support.ParametersLoaders.testParameters;
 import static org.sonatype.sisu.filetasks.builder.FileRef.file;
+import static org.sonatype.sisu.goodies.common.Varargs.$;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,6 +32,7 @@ import javax.inject.Inject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
+import org.junit.runners.Parameterized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
@@ -55,6 +61,18 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 public abstract class StagingAntPluginITSupport
     extends NexusRunningParametrizedITSupport
 {
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data()
+    {
+        return firstAvailableTestParameters(
+            systemTestParameters(),
+            testParameters(
+                $( "com.sonatype.nexus:nexus-professional:zip:bundle" )
+            )
+        ).load();
+    }
+
     protected final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Rule
