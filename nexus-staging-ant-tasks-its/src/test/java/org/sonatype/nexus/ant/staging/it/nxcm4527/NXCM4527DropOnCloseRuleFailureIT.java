@@ -36,6 +36,12 @@ import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 public class NXCM4527DropOnCloseRuleFailureIT
     extends NXCM4527Support
 {
+
+    public NXCM4527DropOnCloseRuleFailureIT( final String nexusBundleCoordinates )
+    {
+        super( nexusBundleCoordinates );
+    }
+
     /**
      * Validates nexus side of affairs post maven invocations.
      */
