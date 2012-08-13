@@ -22,7 +22,7 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
 /**
  * Closes a Nexus staging repository.
- * 
+ *
  * @author cstamas
  * @since 2.1
  */
@@ -36,7 +36,7 @@ public class CloseStageRepositoryTask
         final String[] stagingRepositoryIds = getStagingRepositoryId();
         try
         {
-            log( "Closing staging repository with ID=" + Arrays.toString( stagingRepositoryIds ) );
+            log( "Closing staging repositories with IDs " + Arrays.toString( stagingRepositoryIds ) + "."  );
             stagingWorkflow.finishStagingRepositories( getDescription(), stagingRepositoryIds );
         }
         catch ( StagingRuleFailuresException e )
@@ -46,8 +46,14 @@ public class CloseStageRepositoryTask
             // drop the repository (this will break exception chain if there's new failure, like network)
             if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
             {
+                log( "Dropping failed staging repositories " + Arrays.toString( stagingRepositoryIds ) + "." );
                 stagingWorkflow.dropStagingRepositories( "Staging rules failed on closing staging repositories: "
                     + Arrays.toString( stagingRepositoryIds ), stagingRepositoryIds );
+            }
+            else
+            {
+                log( "Not dropping failed staging repositories " + Arrays.toString( stagingRepositoryIds )
+                    + "." );
             }
             // fail the build
             throw new BuildException( "Could not perform action: there are failing staging rules!", e );

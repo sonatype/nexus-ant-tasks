@@ -33,7 +33,7 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
 /**
  * Abstract class for deploy related mojos.
- * 
+ *
  * @author cstamas
  * @since 2.1
  */
@@ -87,9 +87,10 @@ public abstract class AbstractDeployTask
     }
 
     /**
-     * Stages an artifact from a particular file locally.
-     * 
-     * @param source the file to stage
+     * Stages an artifact from {@code path} under {@code baseDir} to {@code path} under {@link #getStagingDirectory()}.
+     *
+     * @param baseDir the base directory to copy {@code path} from
+     * @param path the sub path under {@code baseDir} and staging target directory
      * @throws BuildException if an error occurred deploying the artifact
      */
     protected void stageLocally( File baseDir, String path )
@@ -109,7 +110,7 @@ public abstract class AbstractDeployTask
 
     /**
      * Stages remotely locally staged artifacts.
-     * 
+     *
      * @throws BuildException if an error occurred deploying the artifact
      */
     protected void stageRemotely()
@@ -160,7 +161,7 @@ public abstract class AbstractDeployTask
 
     /**
      * This is the profile that was either "auto selected" (matched) or selection by ID happened if user provided
-     * {@link #stagingProfileId} parameter.
+     * {@link #stagingRepositoryId} parameter.
      */
     private Profile stagingProfile;
 
@@ -319,9 +320,16 @@ public abstract class AbstractDeployTask
                             // network)
                             if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
                             {
+                                log( "Dropping failed staging repository with ID \"" + managedStagingRepositoryId
+                                    + "\"." );
                                 stagingService.dropStagingRepositories(
                                     "Staging rules failed on closing staging repository: " + managedStagingRepositoryId,
                                     managedStagingRepositoryId );
+                            }
+                            else
+                            {
+                                log( "Not dropping failed staging repository with ID \"" + managedStagingRepositoryId
+                                    + "\"." );
                             }
                             // fail the build
                             throw new BuildException( "Could not perform  action agains repository \""
