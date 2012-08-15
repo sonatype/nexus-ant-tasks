@@ -51,6 +51,7 @@ import com.google.common.base.Throwables;
 import com.sonatype.nexus.staging.client.Profile;
 import com.sonatype.nexus.staging.client.StagingRepository;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
+import com.sonatype.nexus.testsuite.support.NexusProConfigurator;
 
 /**
  * A base class that adds support for Ant task tests against real nexus instance.
@@ -94,8 +95,7 @@ public abstract class StagingAntPluginITSupport
     @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
-        return super.configureNexus( configuration ).setSystemProperty( "nexus.createTrialLicense",
-            Boolean.TRUE.toString() );
+        return new NexusProConfigurator( this ).configure( configuration );
     }
 
     @Before
