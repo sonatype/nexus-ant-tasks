@@ -12,7 +12,6 @@
  */
 package org.sonatype.nexus.ant.staging.it;
 
-import static org.sonatype.nexus.client.rest.BaseUrl.baseUrlFrom;
 import static org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy.Strategy.EACH_TEST;
 import static org.sonatype.nexus.testsuite.support.ParametersLoaders.firstAvailableTestParameters;
 import static org.sonatype.nexus.testsuite.support.ParametersLoaders.systemTestParameters;
@@ -27,8 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
@@ -37,14 +34,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.bundle.launcher.NexusBundleConfiguration;
 import org.sonatype.nexus.client.core.NexusClient;
-import org.sonatype.nexus.client.rest.NexusClientFactory;
-import org.sonatype.nexus.client.rest.UsernamePasswordAuthenticationInfo;
 import org.sonatype.nexus.mindexer.client.MavenIndexer;
 import org.sonatype.nexus.mindexer.client.SearchResponse;
-import org.sonatype.nexus.testsuite.support.NexusRunningITSupport;
 import org.sonatype.nexus.testsuite.support.NexusRunningParametrizedITSupport;
 import org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy;
-import org.sonatype.sisu.filetasks.FileTaskBuilder;
 import org.sonatype.sisu.goodies.common.Time;
 
 import com.google.common.base.Throwables;
@@ -79,12 +72,6 @@ public abstract class StagingAntPluginITSupport
     @Rule
     public final Timeout defaultTimeout = new Timeout( Time.minutes( 5 ).toMillisI() );
 
-    @Inject
-    private NexusClientFactory nexusClientFactory;
-
-    @Inject
-    private FileTaskBuilder fileTaskBuilder;
-
     private NexusClient nexusDeploymentClient;
 
     public StagingAntPluginITSupport( final String nexusBundleCoordinates )
@@ -102,9 +89,7 @@ public abstract class StagingAntPluginITSupport
     public void createClient()
     {
         logger.info( "Creating NexusClient..." );
-        nexusDeploymentClient =
-            nexusClientFactory.createFor( baseUrlFrom( nexus().getUrl() ), new UsernamePasswordAuthenticationInfo(
-                "deployment", "deployment123" ) );
+        nexusDeploymentClient = createNexusClient( nexus(), "deployment", "deployment123" );
     }
 
     public MavenIndexer getMavenIndexer()
@@ -165,7 +150,7 @@ public abstract class StagingAntPluginITSupport
         final File rawPom = new File( baseDir, "raw-build.xml" );
         if ( rawPom.isFile() )
         {
-            fileTaskBuilder.copy().file( file( rawPom ) ).filterUsing( properties ).to().file( file( pom ) ).run();
+            tasks().copy().file( file( rawPom ) ).filterUsing( properties ).to().file( file( pom ) ).run();
         }
         else if ( !pom.isFile() )
         {
