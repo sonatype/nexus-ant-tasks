@@ -208,7 +208,7 @@ public abstract class StagingAntPluginITSupport
 
     /**
      * Performs a "cautious" search for GAV that is somewhat "shielded" against Nexus Indexer asynchronicity. It will
-     * repeat the search 3 times, with 1000 milliseconds pause. The reason to do this, to be "almost sure" it is or it
+     * repeat the search 10 times, with 1000 milliseconds pause. The reason to do this, to be "almost sure" it is or it
      * is not found, as Maven Indexer performs commits every second (hence, search might catch the pre-commit state),
      * but also the execution path as for example a deploy "arrives" to index is itself async too
      * (AsynchronousEventInspector). Hence, this method in short does a GAV search, but is "shielded" with some retries
@@ -222,7 +222,7 @@ public abstract class StagingAntPluginITSupport
                                                      final String repositoryId )
     {
         SearchResponse response = null;
-        for ( int i = 0; i < 3; i++ )
+        for ( int i = 0; i < 10; i++ )
         {
             response = getMavenIndexer().searchByGAV( groupId, artifactId, version, classifier, type, repositoryId );
             try
