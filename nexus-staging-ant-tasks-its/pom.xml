@@ -38,7 +38,7 @@
         <artifactId>nexus-professional</artifactId>
         <type>zip</type>
         <classifier>bundle</classifier>
-        <version>2.2-SNAPSHOT</version>
+        <version>2.1.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -57,7 +57,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-
 
     <!-- Plexus container -->
     <dependency>

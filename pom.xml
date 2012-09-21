@@ -98,6 +98,8 @@
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
+    <nexus-core.version>2.2-SNAPSHOT</nexus-core.version>
+
     <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
     <arguments />
   </properties>
@@ -224,7 +226,7 @@
       <dependency>
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
-        <version>1.4-SNAPSHOT</version>
+        <version>1.4</version>
         <scope>test</scope>
       </dependency>
 

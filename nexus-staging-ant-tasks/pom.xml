@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.sonatype.nexus.client</groupId>
       <artifactId>nexus-client-core</artifactId>
-      <version>2.1</version>
+      <version>${nexus-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sonatype.nexus.staging</groupId>
