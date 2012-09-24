@@ -99,6 +99,7 @@
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
     <nexus-core.version>2.2-SNAPSHOT</nexus-core.version>
+    <nexus-pro.version>${nexus-core.version}</nexus-pro.version>
 
     <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
     <arguments />

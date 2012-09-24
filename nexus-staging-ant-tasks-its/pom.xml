@@ -38,7 +38,7 @@
         <artifactId>nexus-professional</artifactId>
         <type>zip</type>
         <classifier>bundle</classifier>
-        <version>2.1.2</version>
+        <version>${nexus-pro.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
