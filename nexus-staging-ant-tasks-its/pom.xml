@@ -18,7 +18,7 @@
   <parent>
     <groupId>org.sonatype.nexus.ant</groupId>
     <artifactId>nexus-ant-tasks</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
   </parent>
 
   <artifactId>nexus-staging-ant-tasks-its</artifactId>
