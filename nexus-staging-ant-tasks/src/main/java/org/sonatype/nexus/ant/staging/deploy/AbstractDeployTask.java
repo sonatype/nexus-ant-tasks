@@ -23,8 +23,8 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
 import org.sonatype.nexus.ant.staging.ErrorDumper;
-import org.sonatype.nexus.client.core.NexusErrorMessageException;
 import org.sonatype.nexus.client.core.NexusStatus;
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
 
 import com.sonatype.nexus.staging.client.Profile;
 import com.sonatype.nexus.staging.client.ProfileMatchingParameters;
@@ -239,7 +239,7 @@ public abstract class AbstractDeployTask
 
             return stagingService.startedRepositoryBaseUrl( stagingProfile, stagingRepositoryId );
         }
-        catch ( NexusErrorMessageException e )
+        catch ( final NexusClientErrorResponseException e )
         {
             ErrorDumper.dumpErrors( this, e );
             // fail the build
@@ -359,7 +359,7 @@ public abstract class AbstractDeployTask
                 }
                 log( "Finished staging against Nexus " + ( successful ? "with success." : "with failure." ) );
             }
-            catch ( NexusErrorMessageException e )
+            catch ( final NexusClientErrorResponseException e )
             {
                 log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
                 ErrorDumper.dumpErrors( this, e );

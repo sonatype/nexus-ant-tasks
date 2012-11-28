@@ -22,8 +22,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.nexus.ant.staging.AbstractStagingTask;
 import org.sonatype.nexus.ant.staging.ErrorDumper;
 import org.sonatype.nexus.ant.staging.deploy.AbstractDeployTask;
-import org.sonatype.nexus.client.core.NexusErrorMessageException;
-
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 
@@ -31,7 +30,7 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
  * Super class of Action Tasks. These tasks are callable as part of the build, and will try to use the property file
  * from locally staged repository to get the repository ID if not configured directly. This way, you can integrate these
  * tasks in your build directly (ie. to release or promote even from build).
- * 
+ *
  * @author cstamas
  */
 public abstract class AbstractStagingActionTask
@@ -101,7 +100,7 @@ public abstract class AbstractStagingActionTask
         {
             doExecute( stagingWorkflow );
         }
-        catch ( NexusErrorMessageException e )
+        catch ( final NexusClientErrorResponseException e )
         {
             ErrorDumper.dumpErrors( this, e );
             // fail the build
