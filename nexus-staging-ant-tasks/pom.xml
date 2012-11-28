@@ -26,6 +26,11 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+    </dependency>
+
     <!-- Nexus Client to drive Staging operations -->
     <dependency>
       <groupId>com.sonatype.nexus.staging</groupId>
@@ -81,20 +86,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant</artifactId>
-    </dependency>
-
-    <!-- Test -->
-    <dependency>
       <groupId>org.sonatype.sisu.litmus</groupId>
       <artifactId>litmus-testsupport</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.ant</groupId>
-      <artifactId>ant-testutil</artifactId>
-      <version>${ant.version}</version>
+      <version>1.5.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
