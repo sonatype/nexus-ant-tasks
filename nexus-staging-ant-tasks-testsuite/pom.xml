@@ -21,7 +21,7 @@
     <version>1.2-SNAPSHOT</version>
   </parent>
 
-  <artifactId>nexus-staging-ant-tasks-its</artifactId>
+  <artifactId>nexus-staging-ant-tasks-testsuite</artifactId>
 
   <dependencyManagement>
     <dependencies>

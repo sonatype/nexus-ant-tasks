@@ -106,7 +106,7 @@
 
   <modules>
     <module>nexus-staging-ant-tasks</module>
-    <module>nexus-staging-ant-tasks-its</module>
+    <module>nexus-staging-ant-tasks-testsuite</module>
   </modules>
 
   <dependencyManagement>
