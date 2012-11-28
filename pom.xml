@@ -100,9 +100,6 @@
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
-
-    <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
-    <arguments/>
   </properties>
 
   <modules>
@@ -230,25 +227,8 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.2.1</version>
-          <configuration>
-            <!-- here to prevent hang see MGPG-9 -->
-            <mavenExecutorId>forked-path</mavenExecutorId>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <useReleaseProfile>false</useReleaseProfile>
-            <goals>deploy</goals>
-            <arguments>-Prelease -Pnoit ${arguments}</arguments>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.12</version>
           <configuration>
-            <!-- force use of property -->
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>once</forkMode>
             <argLine>-ea</argLine>
             <failIfNoTests>false</failIfNoTests>
@@ -271,18 +251,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.12</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>integration-test</goal>
-                <goal>verify</goal>
-              </goals>
-            </execution>
-          </executions>
           <configuration>
-            <!-- force use of property -->
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>always</forkMode>
             <argLine>-ea</argLine>
             <workingDirectory>${project.build.directory}</workingDirectory>
