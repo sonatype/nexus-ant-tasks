@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
-    <version>12</version>
+    <version>22</version>
     <relativePath/>
   </parent>
 
@@ -96,6 +96,7 @@
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
+
     <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
     <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
 
@@ -236,27 +237,11 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.2.1</version>
-          <configuration>
-            <!-- here to prevent hang see MGPG-9 -->
-            <mavenExecutorId>forked-path</mavenExecutorId>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
-            <useReleaseProfile>false</useReleaseProfile>
-            <goals>deploy</goals>
-            <arguments>-Prelease -Pnoit ${arguments}</arguments>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.12</version>
           <configuration>
-            <!-- force use of property -->
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>once</forkMode>
             <argLine>-ea</argLine>
+            <failIfNoTests>false</failIfNoTests>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
@@ -276,20 +261,10 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>2.12</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>integration-test</goal>
-                <goal>verify</goal>
-              </goals>
-            </execution>
-          </executions>
           <configuration>
-            <!-- force use of property -->
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>always</forkMode>
             <argLine>-ea</argLine>
+            <failIfNoTests>false</failIfNoTests>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
@@ -322,40 +297,6 @@
           </configuration>
         </plugin>
 
-        <!-- Manually run with: mvn clean com.mycila.maven-license-plugin:maven-license-plugin:1.9.0:format -->
-        <plugin>
-          <groupId>com.mycila.maven-license-plugin</groupId>
-          <artifactId>maven-license-plugin</artifactId>
-          <version>1.9.0</version>
-          <configuration>
-            <header>header-eplv1.txt</header>
-            <encoding>UTF-8</encoding>
-            <strictCheck>true</strictCheck>
-            <useDefaultExcludes>false</useDefaultExcludes>
-            <includes>
-              <include>**/*.java</include>
-              <include>**/*.vm</include>
-              <include>**/*.xml</include>
-              <include>**/*.groovy</include>
-              <include>**/*.aj</include>
-              <include>**/*.css</include>
-              <include>**/*.html</include>
-              <include>**/*.js</include>
-            </includes>
-            <excludes>
-              <exclude>**/.*/**</exclude>
-              <exclude>**/target/**</exclude>
-              <exclude>**/nbactions*.xml</exclude>
-              <exclude>**/nb-configuration.xml</exclude>
-              <exclude>atlassian-ide-plugin.xml</exclude>
-            </excludes>
-            <properties>
-              <year>2012</year>
-            </properties>
-            <!-- this is important for multi-module project -->
-            <aggregate>true</aggregate>
-          </configuration>
-        </plugin>
       </plugins>
     </pluginManagement>
 

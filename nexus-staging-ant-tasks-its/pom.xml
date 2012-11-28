@@ -23,10 +23,6 @@
 
   <artifactId>nexus-staging-ant-tasks-its</artifactId>
 
-  <properties>
-    <nexus-core.version>2.1</nexus-core.version>
-  </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -124,16 +120,4 @@
 
   </dependencies>
 
-  <build>
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-        <filtering>true</filtering>
-      </testResource>
-      <testResource>
-        <directory>src/test/it-resources</directory>
-        <filtering>false</filtering>
-      </testResource>
-    </testResources>
-  </build>
 </project>
