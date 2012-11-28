@@ -39,7 +39,6 @@ import org.sonatype.nexus.mindexer.client.SearchResponse;
 import org.sonatype.nexus.testsuite.support.NexusRunningParametrizedITSupport;
 import org.sonatype.nexus.testsuite.support.NexusStartAndStopStrategy;
 import org.sonatype.sisu.goodies.common.Time;
-
 import com.google.common.base.Throwables;
 import com.sonatype.nexus.staging.client.Profile;
 import com.sonatype.nexus.staging.client.StagingRepository;
@@ -48,7 +47,7 @@ import com.sonatype.nexus.testsuite.support.NexusProConfigurator;
 
 /**
  * A base class that adds support for Ant task tests against real nexus instance.
- * 
+ *
  * @author cstamas
  */
 @NexusStartAndStopStrategy( EACH_TEST )
@@ -62,7 +61,7 @@ public abstract class StagingAntPluginITSupport
         return firstAvailableTestParameters(
             systemTestParameters(),
             testParameters(
-                $( "com.sonatype.nexus:nexus-professional:zip:bundle" )
+                $( "${it.nexus.bundle.groupId}:${it.nexus.bundle.artifactId}:zip:bundle" )
             )
         ).load();
     }
@@ -82,7 +81,21 @@ public abstract class StagingAntPluginITSupport
     @Override
     protected NexusBundleConfiguration configureNexus( final NexusBundleConfiguration configuration )
     {
-        return new NexusProConfigurator( this ).configure( configuration );
+        return new NexusProConfigurator( this ).configure( configuration )
+            .setPlugins(
+                artifactResolver().resolvePluginFromDependencyManagement(
+                    "com.sonatype.components", "plexus-rule"
+                ),
+                artifactResolver().resolvePluginFromDependencyManagement(
+                    "com.sonatype.nexus.plugin", "nexus-procurement-plugin"
+                ),
+                artifactResolver().resolvePluginFromDependencyManagement(
+                    "com.sonatype.nexus.plugin", "nexus-pgp-plugin"
+                ),
+                artifactResolver().resolvePluginFromDependencyManagement(
+                    "com.sonatype.nexus.plugin", "nexus-staging-plugin"
+                )
+            );
     }
 
     @Before
@@ -138,7 +151,7 @@ public abstract class StagingAntPluginITSupport
 
     /**
      * Recurses the baseDir searching for POMs and filters them.
-     * 
+     *
      * @param baseDir
      * @param properties
      * @throws IOException
@@ -177,7 +190,7 @@ public abstract class StagingAntPluginITSupport
     /**
      * Returns the list of all staging repositories - whether open or closed - found in all profiles (all staging
      * repositories present instance-wide).
-     * 
+     *
      * @return
      */
     protected List<StagingRepository> getAllStagingRepositories()
@@ -196,7 +209,7 @@ public abstract class StagingAntPluginITSupport
 
     /**
      * Returns the list of all staging repositories - whether open or closed - found in passed in profile.
-     * 
+     *
      * @return
      */
     protected List<StagingRepository> getProfileStagingRepositories( final Profile profile )
@@ -214,7 +227,7 @@ public abstract class StagingAntPluginITSupport
      * (AsynchronousEventInspector). Hence, this method in short does a GAV search, but is "shielded" with some retries
      * and sleeps to make sure that result is correct. For input parameters see
      * {@link MavenIndexer#searchByGAV(String, String, String, String, String, String)} method.
-     * 
+     *
      * @return
      */
     protected SearchResponse searchThreeTimesForGAV( final String groupId, final String artifactId,
