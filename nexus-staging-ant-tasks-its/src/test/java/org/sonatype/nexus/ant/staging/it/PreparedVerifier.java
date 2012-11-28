@@ -1,4 +1,4 @@
-/*
+/**
  * Sonatype Nexus (TM) Open Source Version
  * Copyright (c) 2007-2012 Sonatype, Inc.
  * All rights reserved. Includes the third-party code listed at http://links.sonatype.com/products/nexus/oss/attributions.
@@ -21,7 +21,7 @@ import org.junit.rules.Verifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.ant.staging.ErrorDumper;
-import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
+import org.sonatype.nexus.client.core.NexusErrorMessageException;
 
 import com.google.common.base.Preconditions;
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
@@ -89,7 +89,7 @@ public class PreparedVerifier
             }, e );
             throw e;
         }
-        catch ( NexusClientErrorResponseException e )
+        catch ( NexusErrorMessageException e )
         {
             ErrorDumper.dumpErrors( new Task()
             {
@@ -106,11 +106,11 @@ public class PreparedVerifier
                 }, (StagingRuleFailuresException) c );
                 throw e;
             }
-            else if ( c instanceof NexusClientErrorResponseException )
+            else if ( c instanceof NexusErrorMessageException )
             {
                 ErrorDumper.dumpErrors( new Task()
                 {
-                }, (NexusClientErrorResponseException) c );
+                }, (NexusErrorMessageException) c );
                 throw e;
             }
         } 

@@ -21,7 +21,8 @@
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
-    <version>22</version>
+    <version>12</version>
+    <relativePath/>
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
@@ -90,16 +91,16 @@
 
   <properties>
     <forgeSiteUrl>dav:https://sites.sonatype.com/plugins/nexus-ant-tasks</forgeSiteUrl>
-
-    <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
-    <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
-    <nexus-staging.version>2.2-SNAPSHOT</nexus-staging.version>
-
     <sisu-inject.version>2.3.0</sisu-inject.version>
     <slf4j.version>1.6.4</slf4j.version>
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
+    <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
+    <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
+
+    <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
+    <arguments/>
   </properties>
 
   <modules>
@@ -110,6 +111,55 @@
   <dependencyManagement>
     <dependencies>
 
+      <!-- Inject Bean container -->
+      <!-- Spice hosts SISU/Plexus-legacy libraries, and they expect they are embedded into apps having these provided -->
+      <!-- That makes: shouldn't SISU be actually "provided" instead? -->
+      <dependency>
+        <groupId>org.sonatype.sisu</groupId>
+        <artifactId>sisu-inject-bean</artifactId>
+        <version>${sisu-inject.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.sonatype.sisu</groupId>
+        <artifactId>sisu-guice</artifactId>
+        <version>3.1.1</version>
+        <classifier>no_aop</classifier>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>10.0.1</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+        <scope>compile</scope>
+      </dependency>
+
+      <!-- Plexus support (the version should be tied to SISU used ones!) -->
+      <!-- Plexus needs to be compiled against, is specific (unlike JSR330-enabled SISU is) -->
+      <dependency>
+        <groupId>org.sonatype.sisu</groupId>
+        <artifactId>sisu-inject-plexus</artifactId>
+        <version>${sisu-inject.version}</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-component-annotations</artifactId>
+        <version>1.5.5</version>
+        <scope>compile</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-classworlds</artifactId>
+        <version>2.4</version>
+        <scope>compile</scope>
+      </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
@@ -170,6 +220,14 @@
         <type>jar</type>
         <scope>runtime</scope>
       </dependency>
+
+      <!-- Standard test -->
+      <dependency>
+        <groupId>org.sonatype.sisu.litmus</groupId>
+        <artifactId>litmus-testsupport</artifactId>
+        <version>1.4</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -178,11 +236,27 @@
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.2.1</version>
           <configuration>
+            <!-- here to prevent hang see MGPG-9 -->
+            <mavenExecutorId>forked-path</mavenExecutorId>
+            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <useReleaseProfile>false</useReleaseProfile>
+            <goals>deploy</goals>
+            <arguments>-Prelease -Pnoit ${arguments}</arguments>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.12</version>
+          <configuration>
+            <!-- force use of property -->
+            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>once</forkMode>
             <argLine>-ea</argLine>
-            <failIfNoTests>false</failIfNoTests>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
@@ -202,11 +276,21 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
+          <version>2.12</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
           <configuration>
+            <!-- force use of property -->
+            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>always</forkMode>
             <argLine>-ea</argLine>
             <workingDirectory>${project.build.directory}</workingDirectory>
-            <failIfNoTests>false</failIfNoTests>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
               <h2.check>false</h2.check>
@@ -238,6 +322,40 @@
           </configuration>
         </plugin>
 
+        <!-- Manually run with: mvn clean com.mycila.maven-license-plugin:maven-license-plugin:1.9.0:format -->
+        <plugin>
+          <groupId>com.mycila.maven-license-plugin</groupId>
+          <artifactId>maven-license-plugin</artifactId>
+          <version>1.9.0</version>
+          <configuration>
+            <header>header-eplv1.txt</header>
+            <encoding>UTF-8</encoding>
+            <strictCheck>true</strictCheck>
+            <useDefaultExcludes>false</useDefaultExcludes>
+            <includes>
+              <include>**/*.java</include>
+              <include>**/*.vm</include>
+              <include>**/*.xml</include>
+              <include>**/*.groovy</include>
+              <include>**/*.aj</include>
+              <include>**/*.css</include>
+              <include>**/*.html</include>
+              <include>**/*.js</include>
+            </includes>
+            <excludes>
+              <exclude>**/.*/**</exclude>
+              <exclude>**/target/**</exclude>
+              <exclude>**/nbactions*.xml</exclude>
+              <exclude>**/nb-configuration.xml</exclude>
+              <exclude>atlassian-ide-plugin.xml</exclude>
+            </excludes>
+            <properties>
+              <year>2012</year>
+            </properties>
+            <!-- this is important for multi-module project -->
+            <aggregate>true</aggregate>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 

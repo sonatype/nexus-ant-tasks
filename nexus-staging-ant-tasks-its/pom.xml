@@ -23,6 +23,10 @@
 
   <artifactId>nexus-staging-ant-tasks-its</artifactId>
 
+  <properties>
+    <nexus-core.version>2.1</nexus-core.version>
+  </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -50,6 +54,23 @@
       </exclusions>
     </dependency>
 
+    <!-- Plexus container -->
+    <dependency>
+      <groupId>org.sonatype.sisu</groupId>
+      <artifactId>sisu-inject-bean</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.sonatype.sisu</groupId>
+          <artifactId>sisu-guava</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
@@ -70,9 +91,15 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.sonatype.nexus.client</groupId>
+      <artifactId>nexus-client-core</artifactId>
+      <version>${nexus-core.version}</version>
+      <scope>compile</scope> <!-- To have it installed by invoker, but used in test -->
+    </dependency>
+    <dependency>
       <groupId>com.sonatype.nexus.staging</groupId>
       <artifactId>nexus-staging-client</artifactId>
-      <version>2.2-SNAPSHOT</version>
+      <version>2.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -85,7 +112,7 @@
     <dependency>
       <groupId>com.sonatype.nexus.pluginkit</groupId>
       <artifactId>nexus-testsuite-support</artifactId>
-      <version>1.2-SNAPSHOT</version>
+      <version>1.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
