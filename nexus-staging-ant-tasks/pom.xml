@@ -15,6 +15,7 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.sonatype.nexus.ant</groupId>
     <artifactId>nexus-ant-tasks</artifactId>
@@ -22,10 +23,6 @@
   </parent>
 
   <artifactId>nexus-staging-ant-tasks</artifactId>
-  <packaging>jar</packaging>
-  <name>Nexus Ant Tasks : Nexus Staging</name>
-
-  <description>Client Ant Tasks of Nexus Staging Suite.</description>
 
   <dependencies>
 
@@ -105,7 +102,6 @@
       <version>${ant.version}</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

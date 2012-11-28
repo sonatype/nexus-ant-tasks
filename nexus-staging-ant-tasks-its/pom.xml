@@ -22,10 +22,6 @@
   </parent>
 
   <artifactId>nexus-staging-ant-tasks-its</artifactId>
-  <packaging>jar</packaging>
-  <name>Nexus Ant Tasks : Nexus Staging ITs</name>
-
-  <description>Client Ant Tasks of Nexus Staging Suite ITs.</description>
 
   <properties>
     <nexus-core.version>2.1</nexus-core.version>
@@ -139,23 +135,5 @@
         <filtering>false</filtering>
       </testResource>
     </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>sisu-maven-bridge-maven-plugin</artifactId>
-        <version>3.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>export</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-      </plugin>
-    </plugins>
   </build>
 </project>

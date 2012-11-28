@@ -13,7 +13,8 @@
     Eclipse Foundation. All other trademarks are the property of their respective owners.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -21,16 +22,13 @@
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
     <version>12</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
   <artifactId>nexus-ant-tasks</artifactId>
   <version>1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
-
-  <name>Nexus Ant Tasks : Parent</name>
-  <description>Sonatype Nexus Ant Tasks Parent</description>
 
   <licenses>
     <license>
@@ -98,11 +96,11 @@
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
-    <nexus-core.version>2.2</nexus-core.version>
-    <nexus-pro.version>2.2-SNAPSHOT</nexus-pro.version>
+    <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
+    <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
 
     <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
-    <arguments />
+    <arguments/>
   </properties>
 
   <modules>
@@ -230,24 +228,10 @@
         <version>1.4</version>
         <scope>test</scope>
       </dependency>
-
     </dependencies>
   </dependencyManagement>
 
-  <!-- pluginManagement and reporting taken from org.sonatype.plugins:plugins-parent:6 -->
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-dependencies</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -263,19 +247,21 @@
             <arguments>-Prelease -Pnoit ${arguments}</arguments>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.12</version>
           <configuration>
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <!-- force use of property -->
+            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>once</forkMode>
             <argLine>-ea</argLine>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
-              <h2.check>false</h2.check><!-- workaround for H2 deadlock -->
+              <h2.check>false</h2.check>
+              <!-- workaround for H2 deadlock -->
             </systemPropertyVariables>
             <excludes>
               <exclude>**/Abstract*.java</exclude>
@@ -300,36 +286,33 @@
             </execution>
           </executions>
           <configuration>
-            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <!-- force use of property -->
+            <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>always</forkMode>
             <argLine>-ea</argLine>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
-              <h2.check>false</h2.check><!-- workaround for H2 deadlock -->
+              <h2.check>false</h2.check>
+              <!-- workaround for H2 deadlock -->
             </systemPropertyVariables>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-component-metadata</artifactId>
           <version>1.5.5</version>
           <executions>
             <execution>
-              <id>process-classes</id>
               <goals>
                 <goal>generate-metadata</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>process-test-classes</id>
-              <goals>
                 <goal>generate-test-metadata</goal>
               </goals>
             </execution>
           </executions>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -338,6 +321,7 @@
             <target>1.6</target>
           </configuration>
         </plugin>
+
         <!-- Manually run with: mvn clean com.mycila.maven-license-plugin:maven-license-plugin:1.9.0:format -->
         <plugin>
           <groupId>com.mycila.maven-license-plugin</groupId>
@@ -374,25 +358,60 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-dependencies</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
 
   <profiles>
     <profile>
-      <id>noit</id>
+      <id>it</id>
+      <activation>
+        <property>
+          <name>it</name>
+        </property>
+      </activation>
+
       <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-failsafe-plugin</artifactId>
-              <configuration>
-                <skipITs>true</skipITs>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>sisu-maven-bridge-maven-plugin</artifactId>
+            <version>3.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>export</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
     </profile>
+
     <profile>
       <id>m2e</id>
       <activation>
@@ -421,7 +440,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <execute />
+                        <execute/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -434,7 +453,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <execute />
+                        <execute/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -447,7 +466,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -462,7 +481,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -475,7 +494,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -488,7 +507,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore />
+                        <ignore/>
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
