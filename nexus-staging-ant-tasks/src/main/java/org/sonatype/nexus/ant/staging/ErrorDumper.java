@@ -12,17 +12,15 @@
  */
 package org.sonatype.nexus.ant.staging;
 
-import java.util.Map;
-
 import org.apache.tools.ant.Task;
-import org.sonatype.nexus.client.core.NexusErrorMessageException;
-
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
 import com.sonatype.nexus.staging.client.StagingRuleFailures;
 import com.sonatype.nexus.staging.client.StagingRuleFailures.RuleFailure;
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 
 public class ErrorDumper
 {
+
     public static void dumpErrors( final Task task, final StagingRuleFailuresException e )
     {
         task.log( "" );
@@ -32,7 +30,7 @@ public class ErrorDumper
         for ( StagingRuleFailures failure : e.getFailures() )
         {
             task.log( String.format( "Repository \"%s\" (id=%s) failures", failure.getRepositoryName(),
-                failure.getRepositoryId() ) );
+                                     failure.getRepositoryId() ) );
             for ( RuleFailure ruleFailure : failure.getFailures() )
             {
                 task.log( String.format( "  Rule \"%s\" failures", ruleFailure.getRuleName() ) );
@@ -46,13 +44,13 @@ public class ErrorDumper
         task.log( "" );
     }
 
-    public static void dumpErrors( final Task task, final NexusErrorMessageException e )
+    public static void dumpErrors( final Task task, final NexusClientErrorResponseException e )
     {
         task.log( "" );
-        task.log( String.format( "Nexus Error Response: %s - %s", e.getStatusCode(), e.getStatusMessage() ) );
-        for ( Map.Entry<String, String> errorEntry : e.getErrors().entrySet() )
+        task.log( String.format( "Nexus Error Response: %s - %s", e.getResponseCode(), e.getReasonPhrase() ) );
+        for ( NexusClientErrorResponseException.ErrorMessage error : e.errors() )
         {
-            task.log( String.format( "  %s - %s", unfick( errorEntry.getKey() ), unfick( errorEntry.getValue() ) ) );
+            task.log( String.format( "  %s - %s", unfick( error.getId() ), unfick( error.getMessage() ) ) );
         }
         task.log( "" );
     }

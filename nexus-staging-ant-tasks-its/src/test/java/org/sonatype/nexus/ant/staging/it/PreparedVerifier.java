@@ -21,7 +21,7 @@ import org.junit.rules.Verifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.nexus.ant.staging.ErrorDumper;
-import org.sonatype.nexus.client.core.NexusErrorMessageException;
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
 
 import com.google.common.base.Preconditions;
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
@@ -89,7 +89,7 @@ public class PreparedVerifier
             }, e );
             throw e;
         }
-        catch ( NexusErrorMessageException e )
+        catch ( NexusClientErrorResponseException e )
         {
             ErrorDumper.dumpErrors( new Task()
             {
@@ -106,11 +106,11 @@ public class PreparedVerifier
                 }, (StagingRuleFailuresException) c );
                 throw e;
             }
-            else if ( c instanceof NexusErrorMessageException )
+            else if ( c instanceof NexusClientErrorResponseException )
             {
                 ErrorDumper.dumpErrors( new Task()
                 {
-                }, (NexusErrorMessageException) c );
+                }, (NexusClientErrorResponseException) c );
                 throw e;
             }
         } 
