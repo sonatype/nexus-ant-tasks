@@ -21,8 +21,7 @@
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
-    <version>12</version>
-    <relativePath/>
+    <version>22</version>
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
@@ -91,13 +90,16 @@
 
   <properties>
     <forgeSiteUrl>dav:https://sites.sonatype.com/plugins/nexus-ant-tasks</forgeSiteUrl>
+
+    <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
+    <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
+    <nexus-staging.version>2.2-SNAPSHOT</nexus-staging.version>
+
     <sisu-inject.version>2.3.0</sisu-inject.version>
     <slf4j.version>1.6.4</slf4j.version>
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
-    <nexus-core.version>2.3-SNAPSHOT</nexus-core.version>
-    <nexus-pro.version>2.3-SNAPSHOT</nexus-pro.version>
 
     <!-- This below is needed to "default" maven-release-plugin (see pluginMgt section) to empty string -->
     <arguments/>
@@ -257,6 +259,7 @@
             <redirectTestOutputToFile>${maven.test.redirectTestOutputToFile}</redirectTestOutputToFile>
             <forkMode>once</forkMode>
             <argLine>-ea</argLine>
+            <failIfNoTests>false</failIfNoTests>
             <workingDirectory>${project.build.directory}</workingDirectory>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
@@ -291,6 +294,7 @@
             <forkMode>always</forkMode>
             <argLine>-ea</argLine>
             <workingDirectory>${project.build.directory}</workingDirectory>
+            <failIfNoTests>false</failIfNoTests>
             <systemPropertyVariables>
               <java.awt.headless>true</java.awt.headless>
               <h2.check>false</h2.check>
