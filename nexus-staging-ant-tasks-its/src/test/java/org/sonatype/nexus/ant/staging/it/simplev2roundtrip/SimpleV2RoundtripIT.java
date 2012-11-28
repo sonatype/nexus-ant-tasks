@@ -149,8 +149,8 @@ public class SimpleV2RoundtripIT
         throws IOException
     {
         final PreparedVerifier verifier =
-            createPreparedVerifier( getClass().getSimpleName(), new File( getBasedir(),
-                "target/test-classes/simple-project" ), "sample-dist", null );
+            createPreparedVerifier(
+                getClass().getSimpleName(), new File( getBasedir(), "target/test-classes/simple-project" ), "sample-dist", null );
         roundtrip( verifier );
     }
 }
