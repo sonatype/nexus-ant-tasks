@@ -221,14 +221,6 @@
         <type>jar</type>
         <scope>runtime</scope>
       </dependency>
-
-      <!-- Standard test -->
-      <dependency>
-        <groupId>org.sonatype.sisu.litmus</groupId>
-        <artifactId>litmus-testsupport</artifactId>
-        <version>1.5.1</version>
-        <scope>test</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
