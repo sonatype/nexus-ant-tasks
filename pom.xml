@@ -13,8 +13,7 @@
     Eclipse Foundation. All other trademarks are the property of their respective owners.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -22,12 +21,12 @@
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
     <version>31</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
   <artifactId>nexus-ant-tasks</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>pom</packaging>
 
   <licenses>
@@ -411,7 +410,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <execute/>
+                        <execute />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -424,7 +423,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <execute/>
+                        <execute />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -437,7 +436,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -452,7 +451,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -465,7 +464,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                     <pluginExecution>
@@ -478,7 +477,7 @@
                         </goals>
                       </pluginExecutionFilter>
                       <action>
-                        <ignore/>
+                        <ignore />
                       </action>
                     </pluginExecution>
                   </pluginExecutions>
