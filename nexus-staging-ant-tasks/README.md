@@ -12,10 +12,15 @@
     Eclipse Foundation. All other trademarks are the property of their respective owners.
 
 -->
+
 Nexus Staging Ant Tasks
 =======================
 
 Apache Ant tasks that cover Nexus Staging V2 workflow. While these tasks ("staging client") side is open source, you need a Sonatype Nexus Professional 2.1+ on the server side to use these!
+
+Notes:
+ * to _build this plugin_ from sources you need access to Sonatype commercial components!
+ * to _use this plugin_ in your build, access to Central only is enough!
 
 ## Documentation
 
