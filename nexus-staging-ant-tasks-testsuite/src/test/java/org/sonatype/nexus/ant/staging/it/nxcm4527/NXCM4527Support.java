@@ -149,9 +149,6 @@ public abstract class NXCM4527Support
 
     /**
      * Simulates separate invocation of commands. Deploy then release.
-     * 
-     * @param verifier
-     * @throws VerificationException
      */
     protected void roundtrip( final PreparedVerifier verifier )
     {
@@ -169,8 +166,6 @@ public abstract class NXCM4527Support
 
     /**
      * Perform Ant invocation(s).
-     * 
-     * @param verifier
      */
     protected abstract void invokeAnt( final PreparedVerifier verifier );
 }

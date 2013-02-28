@@ -18,30 +18,36 @@
   <!-- HACK: to make checkout on Win have POMs with good checksums -->
   <target name="normalize">
     <fixcrlf srcdir="target/test-classes/${dist}" includes="**/*.pom"
-             eol="lf" eof="remove" />
+             eol="lf" eof="remove"/>
   </target>
 
-	<staging:nexusStagingInfo id="local-nexus" stagingDirectory="target/local-staging-${testId}">
-		<staging:projectInfo groupId="${itproject.groupId}" artifactId="${itproject.artifactId}" version="${itproject.version}" />
-		<staging:connectionInfo baseUrl="http://localhost:${nexus.port}/nexus">
-			<staging:authentication username="deployment" password="deployment123" />
-		</staging:connectionInfo>
-	</staging:nexusStagingInfo>
+  <staging:nexusStagingInfo id="local-nexus" stagingDirectory="target/local-staging-${testId}">
+    <staging:projectInfo groupId="${itproject.groupId}" artifactId="${itproject.artifactId}" version="${itproject.version}"/>
+    <staging:connectionInfo baseUrl="http://localhost:${nexus.port}/nexus">
+      <staging:authentication username="deployment" password="deployment123"/>
+    </staging:connectionInfo>
+  </staging:nexusStagingInfo>
 
-	<target name="deploy" description="Deploys the built binaries (locally and remotely stages)" depends="normalize">
-		<staging:stageLocally>
-			<staging:nexusStagingInfo refid="local-nexus" />
-			<fileset dir="target/test-classes/${dist}" />
-		</staging:stageLocally>
-		<staging:stageRemotely>
-			<staging:nexusStagingInfo refid="local-nexus" />
-		</staging:stageRemotely>
-	</target>
+  <target name="deploy" description="Deploys the built binaries (locally and remotely stages)" depends="normalize">
+    <staging:stageLocally>
+      <staging:nexusStagingInfo refid="local-nexus"/>
+      <fileset dir="target/test-classes/${dist}"/>
+    </staging:stageLocally>
+    <staging:stageRemotely>
+      <staging:nexusStagingInfo refid="local-nexus"/>
+    </staging:stageRemotely>
+  </target>
 
-	<target name="release" description="Releases the remoetely staged binaries">
-		<staging:releaseStagingRepository>
-			<staging:nexusStagingInfo refid="local-nexus" />
-		</staging:releaseStagingRepository>
-	</target>
+  <target name="release" description="Releases the remotely staged binaries">
+    <staging:releaseStagingRepository>
+      <staging:nexusStagingInfo refid="local-nexus"/>
+    </staging:releaseStagingRepository>
+  </target>
+
+  <target name="drop" description="Releases the drops staged binaries">
+    <staging:dropStagingRepository>
+      <staging:nexusStagingInfo refid="local-nexus"/>
+    </staging:dropStagingRepository>
+  </target>
 
 </project>

@@ -117,9 +117,6 @@ public class SimpleV2RoundtripIT
 
     /**
      * Simulates separate invocation of commands. Deploy then release.
-     * 
-     * @param verifier
-     * @throws VerificationException
      */
     protected void roundtrip( final PreparedVerifier verifier )
     {
@@ -130,6 +127,7 @@ public class SimpleV2RoundtripIT
         // invoke maven
         verifier.executeTarget( "deploy" );
         verifier.executeTarget( "release" );
+        verifier.executeTarget( "drop" );
         // check post-state
         postNexusAssertions( verifier );
         // cleanup nexus
@@ -140,9 +138,6 @@ public class SimpleV2RoundtripIT
 
     /**
      * Project set up in simple way.
-     * 
-     * @throws VerificationException
-     * @throws IOException
      */
     @Test
     public void roundtripWithSimpleProject()
