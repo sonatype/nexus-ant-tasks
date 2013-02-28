@@ -15,53 +15,58 @@
 -->
 <project xmlns:staging="antlib:org.sonatype.nexus.ant.staging" default="deploy">
 
-    <!--
-    This is an example Ant build file using the Nexus Staging Tasks to stage locally and remotely the
-    nexus-staging-ant-tasks project itself. As a prerequisite, run "mvn clean install" first to assemble the
-    nexus-staging-ant-tasks.jar which this build file will load below. This build shows only post steps
-    that you'd have in real Ant buildfile, and that are simulated by manually invoking Maven first.
-    -->
+  <!--
+  This is an example Ant build file using the Nexus Staging Tasks to stage locally and remotely the
+  nexus-staging-ant-tasks project itself. As a prerequisite, run "mvn clean install" first to assemble the
+  nexus-staging-ant-tasks.jar which this build file will load below. This build shows only post steps
+  that you'd have in real Ant buildfile, and that are simulated by manually invoking Maven first.
+  -->
 
-    <taskdef uri="antlib:org.sonatype.nexus.ant.staging" resource="org/sonatype/nexus/ant/staging/antlib.xml">
-        <classpath>
-            <fileset dir="target" includes="nexus-staging-ant-tasks-*uber.jar"/>
-        </classpath>
-    </taskdef>
+  <property name="stage.dir" location="target/nexus-staging"/>
+  <property name="tasks.version" value="1.3-SNAPSHOT"/>
+  <property name="nexus.url" value="http://localhost:8081/nexus"/>
+  <property name="nexus.username" value="deployment"/>
+  <property name="nexus.password" value="deployment123"/>
 
-    <property name="build.dir" location="target"/>
+  <taskdef uri="antlib:org.sonatype.nexus.ant.staging" resource="org/sonatype/nexus/ant/staging/antlib.xml">
+    <classpath>
+      <fileset dir="target" includes="nexus-staging-ant-tasks-*uber.jar"/>
+    </classpath>
+  </taskdef>
 
-    <staging:nexusStagingInfo id="target-nexus" stagingDirectory="target/local-staging">
-        <staging:projectInfo groupId="org.sonatype.nexus.ant" artifactId="nexus-staging-ant-tasks" version="1.0"/>
-        <staging:connectionInfo baseUrl="http://localhost:8081/nexus">
-            <staging:authentication username="deployment" password="deployment123"/>
-            <!--
-            <staging:proxy host="proxy.mycorp.com" port="8080">
-                <staging:authentication username="proxyUser" password="proxySecret" />
-            </staging:proxy>
-            -->
-        </staging:connectionInfo>
-    </staging:nexusStagingInfo>
+  <staging:nexusStagingInfo id="target-nexus" stagingDirectory="${stage.dir}">
+    <staging:projectInfo groupId="org.sonatype.nexus.ant" artifactId="nexus-staging-ant-tasks" version="${tasks.version}"/>
+    <staging:connectionInfo baseUrl="${nexus.url}">
+      <staging:authentication username="${nexus.username}" password="${nexus.password}"/>
+      <!--
+      <staging:proxy host="proxy.mycorp.com" port="8080">
+          <staging:authentication username="proxyUser" password="proxySecret" />
+      </staging:proxy>
+      -->
+    </staging:connectionInfo>
+  </staging:nexusStagingInfo>
 
-    <target name="deploy" description="Deploy: Local and Remote Staging">
-        <!--Stage locally the built artifacts -->
-        <staging:stageLocally>
-            <staging:nexusStagingInfo refid="target-nexus"/>
-            <fileset dir="target/local-repo" includes="**/*.*"/>
-        </staging:stageLocally>
-        <!-- Now shoot them remotely (this zaps and closes staging repository) -->
-        <staging:stageRemotely>
-            <staging:nexusStagingInfo refid="target-nexus"/>
-        </staging:stageRemotely>
+  <target name="deploy" description="Deploy: Local and Remote Staging">
+    <!--Stage locally the built artifacts -->
+    <staging:stageLocally>
+      <staging:nexusStagingInfo refid="target-nexus"/>
+      <fileset dir="${stage.dir}" includes="**/*.*"/>
+    </staging:stageLocally>
 
-        <!-- And now, release the staged stuff -->
-        <staging:releaseStagingRepository>
-            <staging:nexusStagingInfo refid="target-nexus"/>
-            <!--
-            This task pick's up the "context" from the properties file created in
-            local staging directory, so no need for additional parameters, it will
-            release the repository you just staged
-            -->
-        </staging:releaseStagingRepository>
-    </target>
+    <!-- Now shoot them remotely (this zaps and closes staging repository) -->
+    <staging:stageRemotely>
+      <staging:nexusStagingInfo refid="target-nexus"/>
+    </staging:stageRemotely>
+
+    <!-- And now, release the staged stuff -->
+    <staging:releaseStagingRepository>
+      <staging:nexusStagingInfo refid="target-nexus"/>
+      <!--
+      This task pick's up the "context" from the properties file created in
+      local staging directory, so no need for additional parameters, it will
+      release the repository you just staged
+      -->
+    </staging:releaseStagingRepository>
+  </target>
 
 </project>
