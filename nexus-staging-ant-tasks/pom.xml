@@ -25,34 +25,29 @@
   <artifactId>nexus-staging-ant-tasks</artifactId>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
     </dependency>
 
-    <!-- Nexus Client to drive Staging operations -->
     <dependency>
       <groupId>com.sonatype.nexus.staging</groupId>
       <artifactId>nexus-staging-client</artifactId>
-      <version>${nexus-staging-plugin.version}</version>
-      <optional>true</optional>
     </dependency>
 
-    <!-- Logging -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-jdk14</artifactId>
-      <version>${slf4j.version}</version>
-      <type>jar</type>
+      <artifactId>slf4j-simple</artifactId>
       <scope>runtime</scope>
     </dependency>
 
@@ -62,6 +57,7 @@
       <artifactId>spice-zapper</artifactId>
       <version>1.1</version>
     </dependency>
+
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
@@ -73,13 +69,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+
     <dependency>
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-charger</artifactId>
       <version>1.1</version>
     </dependency>
 
-    <!-- Plexus container -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
@@ -118,4 +114,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

@@ -84,9 +84,6 @@ public abstract class StagingAntPluginITSupport
         return new NexusProConfigurator( this ).configure( configuration )
             .setPlugins(
                 artifactResolver().resolvePluginFromDependencyManagement(
-                    "com.sonatype.components", "plexus-rule"
-                ),
-                artifactResolver().resolvePluginFromDependencyManagement(
                     "com.sonatype.nexus.plugin", "nexus-procurement-plugin"
                 ),
                 artifactResolver().resolvePluginFromDependencyManagement(
@@ -151,10 +148,6 @@ public abstract class StagingAntPluginITSupport
 
     /**
      * Recurses the baseDir searching for POMs and filters them.
-     *
-     * @param baseDir
-     * @param properties
-     * @throws IOException
      */
     protected void filterBuildXmlsIfNeeded( final File baseDir, final Properties properties )
         throws IOException
@@ -190,8 +183,6 @@ public abstract class StagingAntPluginITSupport
     /**
      * Returns the list of all staging repositories - whether open or closed - found in all profiles (all staging
      * repositories present instance-wide).
-     *
-     * @return
      */
     protected List<StagingRepository> getAllStagingRepositories()
     {
@@ -209,8 +200,6 @@ public abstract class StagingAntPluginITSupport
 
     /**
      * Returns the list of all staging repositories - whether open or closed - found in passed in profile.
-     *
-     * @return
      */
     protected List<StagingRepository> getProfileStagingRepositories( final Profile profile )
     {
@@ -227,8 +216,6 @@ public abstract class StagingAntPluginITSupport
      * (AsynchronousEventInspector). Hence, this method in short does a GAV search, but is "shielded" with some retries
      * and sleeps to make sure that result is correct. For input parameters see
      * {@link MavenIndexer#searchByGAV(String, String, String, String, String, String)} method.
-     *
-     * @return
      */
     protected SearchResponse searchThreeTimesForGAV( final String groupId, final String artifactId,
                                                      final String version, final String classifier, final String type,

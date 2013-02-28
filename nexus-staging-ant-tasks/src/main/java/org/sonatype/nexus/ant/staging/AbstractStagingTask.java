@@ -197,6 +197,14 @@ public abstract class AbstractStagingTask
             this.nexusClient =
                 new JerseyNexusClientFactory( new JerseyStagingWorkflowV2SubsystemFactory() ).createFor( connectionInfo );
             log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString() + "." );
+
+            // Install progress monitor
+            StagingWorkflowV2Service service = nexusClient.getSubsystem(StagingWorkflowV2Service.class);
+            service.setProgressMonitor(new ProgressMonitorImpl(getProject()));
+
+            // FIXME: Expose for configuration
+            //service.setProgressTimeoutMinutes();
+            //service.setProgressPauseDurationSeconds();
         }
         catch ( MalformedURLException e )
         {
