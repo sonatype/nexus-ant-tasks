@@ -17,7 +17,10 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sonatype.nexus.staging.client.StagingWorkflowV3Service;
+import com.sonatype.nexus.staging.client.rest.JerseyStagingWorkflowV3SubsystemFactory;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.sonatype.nexus.ant.staging.deploy.StageRemotelyTask;
 import org.sonatype.nexus.ant.staging.workflow.CloseStageRepositoryTask;
@@ -194,17 +197,15 @@ public abstract class AbstractStagingTask
 
             final org.sonatype.nexus.client.rest.ConnectionInfo connectionInfo =
                 new org.sonatype.nexus.client.rest.ConnectionInfo( baseUrl, authenticationInfo, proxyInfos );
-            this.nexusClient =
-                new JerseyNexusClientFactory( new JerseyStagingWorkflowV2SubsystemFactory() ).createFor( connectionInfo );
-            log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString() + "." );
 
-            // Install progress monitor
-            StagingWorkflowV2Service service = nexusClient.getSubsystem(StagingWorkflowV2Service.class);
-            service.setProgressMonitor(new ProgressMonitorImpl(getProject()));
+            this.nexusClient = new JerseyNexusClientFactory(
+                // support v2 and v3
+                new JerseyStagingWorkflowV2SubsystemFactory(),
+                new JerseyStagingWorkflowV3SubsystemFactory()
+            )
+            .createFor(connectionInfo);
 
-            // FIXME: Expose for configuration
-            //service.setProgressTimeoutMinutes();
-            //service.setProgressPauseDurationSeconds();
+            log( "NexusClient created for Nexus instance on URL: " + baseUrl.toString());
         }
         catch ( MalformedURLException e )
         {
@@ -230,19 +231,51 @@ public abstract class AbstractStagingTask
         return getNexusClient().getConnectionInfo().getBaseUrl();
     }
 
-    protected StagingWorkflowV2Service getStagingWorkflowService()
+    private StagingWorkflowV2Service workflowService;
+
+    public StagingWorkflowV2Service getStagingWorkflowService()
         throws BuildException
     {
-        try
-        {
-            return getNexusClient().getSubsystem( StagingWorkflowV2Service.class );
+        NexusClient nexusClient = getNexusClient();
+
+        if (workflowService == null) {
+            // First try v3
+            try {
+                StagingWorkflowV3Service service = nexusClient.getSubsystem( StagingWorkflowV3Service.class );
+                log("Using staging v3 service", Project.MSG_VERBOSE);
+
+                // Install progress monitor
+                service.setProgressMonitor(new ProgressMonitorImpl(getProject()));
+
+                // FIXME: Expose for configuration
+                //service.setProgressTimeoutMinutes();
+                //service.setProgressPauseDurationSeconds();
+
+                workflowService = service;
+            }
+            catch (Exception e) {
+                log("Unable to resolve staging v3 service; falling back to v2: " + e, e, Project.MSG_VERBOSE);
+            }
+
+            if (workflowService == null) {
+                // fallback to v2 if v3 not available
+                try
+                {
+                    workflowService = nexusClient.getSubsystem( StagingWorkflowV2Service.class );
+                    log("Using staging v2 service", Project.MSG_VERBOSE);
+                }
+                catch ( IllegalArgumentException e )
+                {
+                    throw new BuildException(
+                        String.format("Nexus instance at base URL %s does not support staging v2; reported status: %s, reason:%s",
+                            nexusClient.getConnectionInfo().getBaseUrl(),
+                            nexusClient.getNexusStatus(),
+                            e.getMessage()),
+                        e);
+                }
+            }
         }
-        catch ( IllegalArgumentException e )
-        {
-            throw new BuildException( "Nexus instance at base URL "
-                + getNexusClient().getConnectionInfo().getBaseUrl().toString()
-                + " does not support Staging V2 Reported status: " + getNexusClient().getNexusStatus() + " reason:"
-                + e.getMessage(), e );
-        }
+
+        return workflowService;
     }
 }

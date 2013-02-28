@@ -13,7 +13,7 @@
 
 package org.sonatype.nexus.ant.staging;
 
-import com.sonatype.nexus.staging.client.StagingWorkflowV1Service.ProgressMonitor;
+import com.sonatype.nexus.staging.client.StagingWorkflowV3Service.ProgressMonitor;
 import org.apache.tools.ant.Project;
 
 import java.io.PrintStream;
@@ -47,7 +47,7 @@ public class ProgressMonitorImpl
     }
 
     protected void debug(final String message) {
-        project.log(message, Project.MSG_DEBUG);
+        project.log(message, Project.MSG_VERBOSE); // ant debug is more like trace, user verbose instead
     }
 
     protected void warn(final String message) {
