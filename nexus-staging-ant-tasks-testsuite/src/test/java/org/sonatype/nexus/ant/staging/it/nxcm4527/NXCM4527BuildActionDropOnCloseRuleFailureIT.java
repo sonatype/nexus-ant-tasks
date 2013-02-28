@@ -74,9 +74,6 @@ public class NXCM4527BuildActionDropOnCloseRuleFailureIT
 
     /**
      * Project set up in simple way.
-     * 
-     * @throws VerificationException
-     * @throws IOException
      */
     @Test
     public void roundtripWithSimpleProject()

@@ -48,9 +48,6 @@ public class NXCM4527DropOnCloseRuleFailureOverrideIT
 
     /**
      * Project set up in simple way.
-     * 
-     * @throws VerificationException
-     * @throws IOException
      */
     @Test
     @Override

@@ -29,8 +29,8 @@ public class ErrorDumper
         task.log( "" );
         for ( StagingRuleFailures failure : e.getFailures() )
         {
-            task.log( String.format( "Repository \"%s\" (id=%s) failures", failure.getRepositoryName(),
-                                     failure.getRepositoryId() ) );
+            task.log( String.format( "Repository \"%s\" failures", failure.getRepositoryId() ) );
+
             for ( RuleFailure ruleFailure : failure.getFailures() )
             {
                 task.log( String.format( "  Rule \"%s\" failures", ruleFailure.getRuleName() ) );
