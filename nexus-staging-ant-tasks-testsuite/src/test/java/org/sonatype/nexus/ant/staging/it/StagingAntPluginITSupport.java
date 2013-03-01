@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import com.sonatype.nexus.staging.client.StagingWorkflowV3Service;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.Timeout;
@@ -107,9 +108,9 @@ public abstract class StagingAntPluginITSupport
         return nexusDeploymentClient.getSubsystem( MavenIndexer.class );
     }
 
-    public StagingWorkflowV2Service getStagingWorkflowV2Service()
+    public StagingWorkflowV2Service getStagingWorkflowService()
     {
-        return nexusDeploymentClient.getSubsystem( StagingWorkflowV2Service.class );
+        return nexusDeploymentClient.getSubsystem( StagingWorkflowV3Service.class );
     }
 
     public PreparedVerifier createPreparedVerifier( final String testId, final File baseDir, final String dist,
@@ -187,7 +188,7 @@ public abstract class StagingAntPluginITSupport
     protected List<StagingRepository> getAllStagingRepositories()
     {
         final ArrayList<StagingRepository> result = new ArrayList<StagingRepository>();
-        final StagingWorkflowV2Service stagingWorkflow = getStagingWorkflowV2Service();
+        final StagingWorkflowV2Service stagingWorkflow = getStagingWorkflowService();
         final List<Profile> profiles = stagingWorkflow.listProfiles();
         for ( Profile profile : profiles )
         {
@@ -204,7 +205,7 @@ public abstract class StagingAntPluginITSupport
     protected List<StagingRepository> getProfileStagingRepositories( final Profile profile )
     {
         List<StagingRepository> stagingRepositories =
-            getStagingWorkflowV2Service().listStagingRepositories( profile.getId() );
+            getStagingWorkflowService().listStagingRepositories(profile.getId());
         return stagingRepositories;
     }
 

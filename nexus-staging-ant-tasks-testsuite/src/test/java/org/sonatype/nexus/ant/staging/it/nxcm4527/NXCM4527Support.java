@@ -75,7 +75,7 @@ public abstract class NXCM4527Support
      */
     protected void cleanupNexus( final PreparedVerifier verifier )
     {
-        final StagingWorkflowV2Service stagingWorkflow = getStagingWorkflowV2Service();
+        final StagingWorkflowV2Service stagingWorkflow = getStagingWorkflowService();
         List<StagingRepository> stagingRepositories = getAllStagingRepositories();
         for ( StagingRepository stagingRepository : stagingRepositories )
         {
