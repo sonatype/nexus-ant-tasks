@@ -332,7 +332,7 @@ public abstract class AbstractDeployTask
                                     + "\"." );
                             }
                             // fail the build
-                            throw new BuildException( "Could not perform  action agains repository \""
+                            throw new BuildException( "Could not perform  action against repository \""
                                 + managedStagingRepositoryId + "\": there are failing staging rules!", e );
                         }
                     }
@@ -341,15 +341,15 @@ public abstract class AbstractDeployTask
                         if ( !keepStagingRepositoryOnFailure )
                         {
                             log( "WARN: Dropping failed staging repository with ID \"" + managedStagingRepositoryId
-                                + "\" (due to unsuccesful upload)." );
+                                + "\" (due to unsuccessful upload)." );
                             stagingService.dropStagingRepositories(
-                                "Dropped by nexus-staging-ant-tasks (due to unsuccesful upload).",
+                                "Dropped by nexus-staging-ant-tasks (due to unsuccessful upload).",
                                 managedStagingRepositoryId );
                         }
                         else
                         {
                             log( "WARN: Not dropping failed staging repository with ID \"" + managedStagingRepositoryId
-                                + "\" (due to unsuccesful upload)." );
+                                + "\" (due to unsuccessful upload)." );
                         }
                     }
                 }
@@ -364,14 +364,14 @@ public abstract class AbstractDeployTask
                 log( "Error while trying to close staging repository with ID \"" + managedStagingRepositoryId + "\"." );
                 ErrorDumper.dumpErrors( this, e );
                 // fail the build
-                throw new BuildException( "Could not perform action agains repository \"" + managedStagingRepositoryId
+                throw new BuildException( "Could not perform action against repository \"" + managedStagingRepositoryId
                     + "\": Nexus ErrorResponse received!", e );
             }
         }
 
         if ( !successful )
         {
-            log( "Error: Remote staging was unsuccesful!" );
+            log( "Error: Remote staging was unsuccessful!" );
         }
     }
 
