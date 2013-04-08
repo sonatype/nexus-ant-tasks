@@ -14,6 +14,8 @@ package org.sonatype.nexus.ant.staging.workflow;
 
 import java.util.Arrays;
 
+import com.sonatype.nexus.staging.api.dto.StagingActionDTO;
+import com.sonatype.nexus.staging.client.StagingWorkflowV3Service;
 import org.apache.tools.ant.BuildException;
 
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
@@ -27,11 +29,40 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 public class ReleaseStageRepositoryTask
     extends AbstractStagingActionTask
 {
+    private boolean autoDropAfterRelease;
+
+    /**
+     * @since 1.3
+     */
+    public boolean isAutoDropAfterRelease() {
+        return autoDropAfterRelease;
+    }
+
+    /**
+     * @since 1.3
+     */
+    public void setAutoDropAfterRelease(final boolean autoDropAfterRelease) {
+        this.autoDropAfterRelease = autoDropAfterRelease;
+    }
+
     @Override
     public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
         throws BuildException
     {
         log( "Releasing staging repository with ID=" + Arrays.toString( getStagingRepositoryId() ) );
-        stagingWorkflow.releaseStagingRepositories( getDescription(), getStagingRepositoryId() );
+
+        if (stagingWorkflow instanceof StagingWorkflowV3Service) {
+            StagingWorkflowV3Service v3 = (StagingWorkflowV3Service)stagingWorkflow;
+
+            StagingActionDTO action = new StagingActionDTO();
+            action.setDescription(getDescription());
+            action.setStagedRepositoryIds(Arrays.asList(getStagingRepositoryId()));
+            action.setAutoDropAfterRelease(autoDropAfterRelease);
+
+            v3.releaseStagingRepositories(action);
+        }
+        else {
+            stagingWorkflow.releaseStagingRepositories( getDescription(), getStagingRepositoryId() );
+        }
     }
 }
