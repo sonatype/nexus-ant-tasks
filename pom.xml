@@ -20,8 +20,7 @@
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
-    <version>31</version>
-    <relativePath />
+    <version>34</version>
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
@@ -44,7 +43,7 @@
 
   <properties>
     <nexus.version>2.4.0-1</nexus.version>
-    <nexus-staging-plugin.version>2.3.5-SNAPSHOT</nexus-staging-plugin.version>
+    <nexus-staging-plugin.version>2.3.4</nexus-staging-plugin.version>
     <sisu-inject.version>2.3.0</sisu-inject.version>
     <slf4j.version>1.6.4</slf4j.version>
     <logback.version>1.0.5</logback.version>
