@@ -91,7 +91,7 @@ public abstract class StagingAntPluginITSupport
                     "com.sonatype.nexus.plugin", "nexus-pgp-plugin"
                 ),
                 artifactResolver().resolvePluginFromDependencyManagement(
-                    "com.sonatype.nexus.plugin", "nexus-staging-plugin"
+                    "com.sonatype.nexus.staging", "nexus-staging-plugin"
                 )
             );
     }
