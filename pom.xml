@@ -42,16 +42,15 @@
   </scm>
 
   <properties>
-    <nexus.version>2.5.0-01</nexus.version>
-    <nexus-staging-plugin.version>2.3.5-SNAPSHOT</nexus-staging-plugin.version>
+    <nexus.version>2.6.0-SNAPSHOT</nexus.version>
     <sisu-inject.version>2.3.0</sisu-inject.version>
     <slf4j.version>1.6.4</slf4j.version>
     <logback.version>1.0.5</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
 
-    <it.nexus.bundle.groupId>com.sonatype.nexus</it.nexus.bundle.groupId>
-    <it.nexus.bundle.artifactId>nexus-professional-bundle-template</it.nexus.bundle.artifactId>
+    <it.nexus.bundle.groupId>com.sonatype.nexus.assemblies</it.nexus.bundle.groupId>
+    <it.nexus.bundle.artifactId>nexuspro-bundle-template</it.nexus.bundle.artifactId>
     <it.nexus.bundle.version>${nexus.version}</it.nexus.bundle.version>
 
     <nexus-plugin.type>nexus-plugin</nexus-plugin.type>
@@ -139,22 +138,24 @@
       </dependency>
 
       <dependency>
-        <groupId>org.sonatype.nexus.indexer-lucene</groupId>
+        <groupId>org.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-indexer-lucene-client</artifactId>
         <version>${nexus.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.sonatype.nexus.staging</groupId>
-        <artifactId>nexus-staging-plugin</artifactId>
-        <type>${nexus-plugin.type}</type>
-        <version>${nexus-staging-plugin.version}</version>
+        <groupId>com.sonatype.nexus.plugins</groupId>
+        <artifactId>nexus-staging-client</artifactId>
+        <version>${nexus.version}</version>
       </dependency>
 
+      <!-- Plugins below are used in ITs to preinstall in tested bundle -->
+
       <dependency>
-        <groupId>com.sonatype.nexus.staging</groupId>
-        <artifactId>nexus-staging-client</artifactId>
-        <version>${nexus-staging-plugin.version}</version>
+        <groupId>com.sonatype.nexus.plugin</groupId>
+        <artifactId>nexus-pgp-plugin</artifactId>
+        <type>${nexus-plugin.type}</type>
+        <version>${nexus.version}</version>
       </dependency>
 
       <dependency>
@@ -166,7 +167,7 @@
 
       <dependency>
         <groupId>com.sonatype.nexus.plugin</groupId>
-        <artifactId>nexus-pgp-plugin</artifactId>
+        <artifactId>nexus-staging-plugin</artifactId>
         <type>${nexus-plugin.type}</type>
         <version>${nexus.version}</version>
       </dependency>
@@ -186,15 +187,14 @@
       </dependency>
 
       <dependency>
-        <groupId>com.sonatype.nexus.pluginkit</groupId>
-        <artifactId>nexus-testsuite-support</artifactId>
-        <version>1.3.2</version>
+        <groupId>org.sonatype.sisu.litmus</groupId>
+        <artifactId>litmus-testsupport</artifactId>
+        <version>1.7-SNAPSHOT</version>
       </dependency>
 
-      <!-- Force use of proper version of nexus-testsuite-support (there are 2, one in pluginkit, one in nexus-oss... WTF... YES) -->
       <dependency>
-        <groupId>org.sonatype.nexus</groupId>
-        <artifactId>nexus-testsuite-support</artifactId>
+        <groupId>com.sonatype.nexus</groupId>
+        <artifactId>nexuspro-testsuite-support</artifactId>
         <version>${nexus.version}</version>
       </dependency>
 
@@ -269,6 +269,25 @@
             <source>1.6</source>
             <target>1.6</target>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-maven-plugin</artifactId>
+          <configuration>
+            <signature>
+              <groupId>org.codehaus.mojo.signature</groupId>
+              <artifactId>java16</artifactId>
+              <version>1.1</version>
+            </signature>
+          </configuration>
+          <executions>
+            <execution>
+              <id>check-java16</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
 
       </plugins>

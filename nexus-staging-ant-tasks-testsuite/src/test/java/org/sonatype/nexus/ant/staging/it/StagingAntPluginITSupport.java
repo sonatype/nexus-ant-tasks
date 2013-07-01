@@ -85,13 +85,13 @@ public abstract class StagingAntPluginITSupport
         return new NexusProConfigurator( this ).configure( configuration )
             .setPlugins(
                 artifactResolver().resolvePluginFromDependencyManagement(
-                    "com.sonatype.nexus.plugin", "nexus-procurement-plugin"
+                    "com.sonatype.nexus.plugins", "nexus-procurement-plugin"
                 ),
                 artifactResolver().resolvePluginFromDependencyManagement(
-                    "com.sonatype.nexus.plugin", "nexus-pgp-plugin"
+                    "com.sonatype.nexus.plugins", "nexus-pgp-plugin"
                 ),
                 artifactResolver().resolvePluginFromDependencyManagement(
-                    "com.sonatype.nexus.staging", "nexus-staging-plugin"
+                    "com.sonatype.nexus.plugins", "nexus-staging-plugin"
                 )
             );
     }
