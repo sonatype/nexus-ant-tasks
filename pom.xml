@@ -152,21 +152,21 @@
       <!-- Plugins below are used in ITs to preinstall in tested bundle -->
 
       <dependency>
-        <groupId>com.sonatype.nexus.plugin</groupId>
+        <groupId>com.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-pgp-plugin</artifactId>
         <type>${nexus-plugin.type}</type>
         <version>${nexus.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.sonatype.nexus.plugin</groupId>
+        <groupId>com.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-procurement-plugin</artifactId>
         <type>${nexus-plugin.type}</type>
         <version>${nexus.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.sonatype.nexus.plugin</groupId>
+        <groupId>com.sonatype.nexus.plugins</groupId>
         <artifactId>nexus-staging-plugin</artifactId>
         <type>${nexus-plugin.type}</type>
         <version>${nexus.version}</version>
@@ -190,6 +190,13 @@
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
         <version>1.7-SNAPSHOT</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.sonatype.nexus.plugins</groupId>
+        <artifactId>nexuspro-support-plugin</artifactId>
+        <type>${nexus-plugin.type}</type>
+        <version>${nexus.version}</version>
       </dependency>
 
       <dependency>
