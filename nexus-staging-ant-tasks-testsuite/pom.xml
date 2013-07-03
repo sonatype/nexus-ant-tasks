@@ -63,6 +63,12 @@
 
     <!-- Test -->
     <dependency>
+      <groupId>org.sonatype.sisu.litmus</groupId>
+      <artifactId>litmus-testsupport</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
       <scope>test</scope>
@@ -75,7 +81,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sonatype.nexus.staging</groupId>
+      <groupId>com.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-staging-client</artifactId>
       <scope>test</scope>
     </dependency>
@@ -87,14 +93,14 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sonatype.nexus.pluginkit</groupId>
-      <artifactId>nexus-testsuite-support</artifactId>
+      <groupId>org.sonatype.nexus.plugins</groupId>
+      <artifactId>nexus-indexer-lucene-client</artifactId>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.sonatype.nexus.indexer-lucene</groupId>
-      <artifactId>nexus-indexer-lucene-client</artifactId>
+      <groupId>com.sonatype.nexus</groupId>
+      <artifactId>nexuspro-testsuite-support</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

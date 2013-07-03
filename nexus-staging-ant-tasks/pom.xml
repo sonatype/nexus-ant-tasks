@@ -31,7 +31,7 @@
     </dependency>
 
     <dependency>
-      <groupId>com.sonatype.nexus.staging</groupId>
+      <groupId>com.sonatype.nexus.plugins</groupId>
       <artifactId>nexus-staging-client</artifactId>
     </dependency>
 
@@ -84,13 +84,16 @@
     <dependency>
       <groupId>org.sonatype.sisu.litmus</groupId>
       <artifactId>litmus-testsupport</artifactId>
-      <version>1.5.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
