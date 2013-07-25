@@ -25,7 +25,7 @@
 
   <groupId>org.sonatype.nexus.ant</groupId>
   <artifactId>nexus-ant-tasks</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.6-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <licenses>
@@ -210,7 +210,7 @@
       <dependency>
         <groupId>org.sonatype.nexus.ant</groupId>
         <artifactId>nexus-staging-ant-tasks</artifactId>
-        <version>1.5.1-SNAPSHOT</version>
+        <version>1.6-SNAPSHOT</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
