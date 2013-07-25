@@ -42,7 +42,7 @@
   </scm>
 
   <properties>
-    <nexus.version>2.6.0-01</nexus.version>
+    <nexus.version>2.7.0-SNAPSHOT</nexus.version>
     <sisu-inject.version>2.3.0</sisu-inject.version>
     <slf4j.version>1.6.4</slf4j.version>
     <logback.version>1.0.5</logback.version>
