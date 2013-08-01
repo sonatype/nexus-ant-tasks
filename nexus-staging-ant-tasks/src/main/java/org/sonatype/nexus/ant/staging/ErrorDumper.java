@@ -10,59 +10,54 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging;
 
-import org.apache.tools.ant.Task;
-import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
 import com.sonatype.nexus.staging.client.StagingRuleFailures;
 import com.sonatype.nexus.staging.client.StagingRuleFailures.RuleFailure;
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
+
+import org.apache.tools.ant.Task;
+
 public class ErrorDumper
 {
 
-    public static void dumpErrors( final Task task, final StagingRuleFailuresException e )
-    {
-        task.log( "" );
-        task.log( "Nexus Staging Rules Failure Report" );
-        task.log( "==================================" );
-        task.log( "" );
-        for ( StagingRuleFailures failure : e.getFailures() )
-        {
-            task.log( String.format( "Repository \"%s\" failures", failure.getRepositoryId() ) );
+  public static void dumpErrors(final Task task, final StagingRuleFailuresException e) {
+    task.log("");
+    task.log("Nexus Staging Rules Failure Report");
+    task.log("==================================");
+    task.log("");
+    for (StagingRuleFailures failure : e.getFailures()) {
+      task.log(String.format("Repository \"%s\" failures", failure.getRepositoryId()));
 
-            for ( RuleFailure ruleFailure : failure.getFailures() )
-            {
-                task.log( String.format( "  Rule \"%s\" failures", ruleFailure.getRuleName() ) );
-                for ( String message : ruleFailure.getMessages() )
-                {
-                    task.log( String.format( "    * %s", unfick( message ) ) );
-                }
-            }
-            task.log( "" );
+      for (RuleFailure ruleFailure : failure.getFailures()) {
+        task.log(String.format("  Rule \"%s\" failures", ruleFailure.getRuleName()));
+        for (String message : ruleFailure.getMessages()) {
+          task.log(String.format("    * %s", unfick(message)));
         }
-        task.log( "" );
+      }
+      task.log("");
     }
+    task.log("");
+  }
 
-    public static void dumpErrors( final Task task, final NexusClientErrorResponseException e )
-    {
-        task.log( "" );
-        task.log( String.format( "Nexus Error Response: %s - %s", e.getResponseCode(), e.getReasonPhrase() ) );
-        for ( NexusClientErrorResponseException.ErrorMessage error : e.errors() )
-        {
-            task.log( String.format( "  %s - %s", unfick( error.getId() ), unfick( error.getMessage() ) ) );
-        }
-        task.log( "" );
+  public static void dumpErrors(final Task task, final NexusClientErrorResponseException e) {
+    task.log("");
+    task.log(String.format("Nexus Error Response: %s - %s", e.getResponseCode(), e.getReasonPhrase()));
+    for (NexusClientErrorResponseException.ErrorMessage error : e.errors()) {
+      task.log(String.format("  %s - %s", unfick(error.getId()), unfick(error.getMessage())));
     }
+    task.log("");
+  }
 
-    // ==
+  // ==
 
-    protected static String unfick( final String str )
-    {
-        if ( str != null )
-        {
-            return str.replace( "&quot;", "" ).replace( "&lt;b&gt;", "" ).replace( "&lt;/b&gt;", "" );
-        }
-        return str;
+  protected static String unfick(final String str) {
+    if (str != null) {
+      return str.replace("&quot;", "").replace("&lt;b&gt;", "").replace("&lt;/b&gt;", "");
     }
+    return str;
+  }
 }

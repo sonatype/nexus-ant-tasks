@@ -10,81 +10,78 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.it.nxcm4527;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
-import junit.framework.Assert;
+import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 
-import org.apache.tools.ant.BuildException;
-import org.junit.Test;
 import org.sonatype.nexus.ant.staging.it.PreparedVerifier;
 
-import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
+import junit.framework.Assert;
+import org.apache.tools.ant.BuildException;
+import org.junit.Test;
 
 /**
  * See NXCM-4527, this IT implements it's verification part for Nexus Staging Maven Plugin side. Here, we build and
  * stage a "malformed" project (will lack the javadoc JAR, achieved by passing in "-Dmaven.javadoc.skip=true" during
  * deploy). The project uses default settings for nexus-staging-maven-plugin, so such malformed staged project should
- * have the staging repository dropped upon rule failure. Hence, {@link #postNexusAssertions(PreparedVerifier)} contains
+ * have the staging repository dropped upon rule failure. Hence, {@link #postNexusAssertions(PreparedVerifier)}
+ * contains
  * checks that there are no staging repositories but also that the artifact built is not released either.
- * 
+ *
  * @author cstamas
  */
 public class NXCM4527BuildActionDropOnCloseRuleFailureIT
     extends NXCM4527Support
 {
 
-    public NXCM4527BuildActionDropOnCloseRuleFailureIT( final String nexusBundleCoordinates )
-    {
-        super( nexusBundleCoordinates );
-    }
+  public NXCM4527BuildActionDropOnCloseRuleFailureIT(final String nexusBundleCoordinates) {
+    super(nexusBundleCoordinates);
+  }
 
-    /**
-     * Validates nexus side of affairs post maven invocations.
-     */
-    @Override
-    protected void postNexusAssertions( final PreparedVerifier verifier )
-    {
-        assertDefaults( verifier );
-    }
+  /**
+   * Validates nexus side of affairs post maven invocations.
+   */
+  @Override
+  protected void postNexusAssertions(final PreparedVerifier verifier) {
+    assertDefaults(verifier);
+  }
 
-    @Override
-    protected void invokeAnt( final PreparedVerifier verifier )
-    {
-        // should succeed
-        verifier.executeTarget( "deploy" );
-        try
-        {
-            // should fail
-            verifier.executeTarget( "close" );
-            // if no exception, fail the test
-            Assert.fail( "We should end up with failed remote staging!" );
-        }
-        catch ( BuildException e )
-        {
-            // good
-            Assert.assertTrue( e.getCause() instanceof StagingRuleFailuresException );
-        }
+  @Override
+  protected void invokeAnt(final PreparedVerifier verifier) {
+    // should succeed
+    verifier.executeTarget("deploy");
+    try {
+      // should fail
+      verifier.executeTarget("close");
+      // if no exception, fail the test
+      Assert.fail("We should end up with failed remote staging!");
     }
-
-    // ==
-
-    /**
-     * Project set up in simple way.
-     */
-    @Test
-    public void roundtripWithSimpleProject()
-        throws IOException
-    {
-        final Properties properties = new Properties();
-        properties.setProperty( "skipStagingRepositoryClose", "true" );
-        properties.setProperty( "keepStagingRepositoryOnCloseRuleFailure", "false" );
-        final PreparedVerifier verifier =
-            createPreparedVerifier( getClass().getSimpleName(), new File( getBasedir(),
-                "target/test-classes/simple-project-noclose" ), "sample-dist-broken", properties );
-        roundtrip( verifier );
+    catch (BuildException e) {
+      // good
+      Assert.assertTrue(e.getCause() instanceof StagingRuleFailuresException);
     }
+  }
+
+  // ==
+
+  /**
+   * Project set up in simple way.
+   */
+  @Test
+  public void roundtripWithSimpleProject()
+      throws IOException
+  {
+    final Properties properties = new Properties();
+    properties.setProperty("skipStagingRepositoryClose", "true");
+    properties.setProperty("keepStagingRepositoryOnCloseRuleFailure", "false");
+    final PreparedVerifier verifier =
+        createPreparedVerifier(getClass().getSimpleName(), new File(getBasedir(),
+            "target/test-classes/simple-project-noclose"), "sample-dist-broken", properties);
+    roundtrip(verifier);
+  }
 }

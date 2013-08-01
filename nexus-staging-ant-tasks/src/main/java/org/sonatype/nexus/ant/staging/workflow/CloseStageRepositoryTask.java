@@ -10,15 +10,17 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.workflow;
 
 import java.util.Arrays;
 
-import org.apache.tools.ant.BuildException;
-import org.sonatype.nexus.ant.staging.ErrorDumper;
-
 import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
+
+import org.sonatype.nexus.ant.staging.ErrorDumper;
+
+import org.apache.tools.ant.BuildException;
 
 /**
  * Closes a Nexus staging repository.
@@ -29,34 +31,29 @@ import com.sonatype.nexus.staging.client.StagingWorkflowV2Service;
 public class CloseStageRepositoryTask
     extends AbstractStagingActionTask
 {
-    @Override
-    public void doExecute( final StagingWorkflowV2Service stagingWorkflow )
-        throws BuildException
-    {
-        final String[] stagingRepositoryIds = getStagingRepositoryId();
-        try
-        {
-            log( "Closing staging repositories with IDs " + Arrays.toString( stagingRepositoryIds ) + "."  );
-            stagingWorkflow.finishStagingRepositories( getDescription(), stagingRepositoryIds );
-        }
-        catch ( StagingRuleFailuresException e )
-        {
-            // report staging repository failures
-            ErrorDumper.dumpErrors( this, e );
-            // drop the repository (this will break exception chain if there's new failure, like network)
-            if ( !isKeepStagingRepositoryOnCloseRuleFailure() )
-            {
-                log( "Dropping failed staging repositories " + Arrays.toString( stagingRepositoryIds ) + "." );
-                stagingWorkflow.dropStagingRepositories( "Staging rules failed on closing staging repositories: "
-                    + Arrays.toString( stagingRepositoryIds ), stagingRepositoryIds );
-            }
-            else
-            {
-                log( "Not dropping failed staging repositories " + Arrays.toString( stagingRepositoryIds )
-                    + "." );
-            }
-            // fail the build
-            throw new BuildException( "Could not perform action: there are failing staging rules!", e );
-        }
+  @Override
+  public void doExecute(final StagingWorkflowV2Service stagingWorkflow)
+      throws BuildException
+  {
+    final String[] stagingRepositoryIds = getStagingRepositoryId();
+    try {
+      log("Closing staging repositories with IDs " + Arrays.toString(stagingRepositoryIds) + ".");
+      stagingWorkflow.finishStagingRepositories(getDescription(), stagingRepositoryIds);
     }
+    catch (StagingRuleFailuresException e) {
+      // report staging repository failures
+      ErrorDumper.dumpErrors(this, e);
+      // drop the repository (this will break exception chain if there's new failure, like network)
+      if (!isKeepStagingRepositoryOnCloseRuleFailure()) {
+        log("Dropping failed staging repositories " + Arrays.toString(stagingRepositoryIds) + ".");
+        stagingWorkflow.dropStagingRepositories("Staging rules failed on closing staging repositories: "
+            + Arrays.toString(stagingRepositoryIds), stagingRepositoryIds);
+      }
+      else {
+        log("Not dropping failed staging repositories " + Arrays.toString(stagingRepositoryIds) + ".");
+      }
+      // fail the build
+      throw new BuildException("Could not perform action: there are failing staging rules!", e);
+    }
+  }
 }

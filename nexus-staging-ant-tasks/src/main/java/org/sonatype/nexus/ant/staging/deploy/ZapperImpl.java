@@ -10,15 +10,11 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.deploy;
 
 import java.io.IOException;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.codehaus.plexus.util.StringUtils;
 import org.sonatype.spice.zapper.Client;
 import org.sonatype.spice.zapper.IOSourceListable;
 import org.sonatype.spice.zapper.Parameters;
@@ -26,84 +22,79 @@ import org.sonatype.spice.zapper.ParametersBuilder;
 import org.sonatype.spice.zapper.client.hc4.Hc4ClientBuilder;
 import org.sonatype.spice.zapper.fs.DirectoryIOSource;
 
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.codehaus.plexus.util.StringUtils;
+
 /**
  * Default imple of Zapper encapsulating component.
- * 
+ *
  * @author cstamas
  * @since 2.1
  */
 public class ZapperImpl
     implements Zapper
 {
-    @Override
-    public void deployDirectory( final ZapperRequest zapperRequest )
-        throws IOException
-    {
-        try
-        {
-            HttpHost proxyServer = null;
-            BasicCredentialsProvider credentialsProvider = null;
-            if ( !StringUtils.isBlank( zapperRequest.getProxyProtocol() ) )
-            {
-                proxyServer =
-                    new HttpHost( zapperRequest.getProxyHost(), zapperRequest.getProxyPort(),
-                        zapperRequest.getProxyProtocol() );
+  @Override
+  public void deployDirectory(final ZapperRequest zapperRequest)
+      throws IOException
+  {
+    try {
+      HttpHost proxyServer = null;
+      BasicCredentialsProvider credentialsProvider = null;
+      if (!StringUtils.isBlank(zapperRequest.getProxyProtocol())) {
+        proxyServer =
+            new HttpHost(zapperRequest.getProxyHost(), zapperRequest.getProxyPort(),
+                zapperRequest.getProxyProtocol());
 
-                if ( !StringUtils.isBlank( zapperRequest.getProxyUsername() ) )
-                {
-                    UsernamePasswordCredentials proxyCredentials =
-                        new UsernamePasswordCredentials( zapperRequest.getProxyUsername(),
-                            zapperRequest.getProxyPassword() );
+        if (!StringUtils.isBlank(zapperRequest.getProxyUsername())) {
+          UsernamePasswordCredentials proxyCredentials =
+              new UsernamePasswordCredentials(zapperRequest.getProxyUsername(),
+                  zapperRequest.getProxyPassword());
 
-                    credentialsProvider = new BasicCredentialsProvider();
-                    credentialsProvider.setCredentials( new AuthScope( proxyServer.getHostName(),
-                        proxyServer.getPort(), AuthScope.ANY_REALM, proxyServer.getSchemeName() ), proxyCredentials );
-                }
-            }
-
-            if ( !StringUtils.isBlank( zapperRequest.getRemoteUsername() ) )
-            {
-                UsernamePasswordCredentials remoteCredentials =
-                    new UsernamePasswordCredentials( zapperRequest.getRemoteUsername(),
-                        zapperRequest.getRemotePassword() );
-
-                if ( credentialsProvider == null )
-                {
-                    credentialsProvider = new BasicCredentialsProvider();
-                }
-
-                credentialsProvider.setCredentials( AuthScope.ANY, remoteCredentials );
-            }
-
-            final Parameters parameters = ParametersBuilder.defaults().build();
-            final Hc4ClientBuilder clientBuilder = new Hc4ClientBuilder( parameters, zapperRequest.getRemoteUrl() );
-            if ( credentialsProvider != null )
-            {
-                clientBuilder.withRealm( credentialsProvider );
-            }
-            if ( proxyServer != null )
-            {
-                clientBuilder.withProxy( proxyServer );
-            }
-            final Client client = clientBuilder.build();
-            final IOSourceListable deployables = new DirectoryIOSource( zapperRequest.getStageRepository() );
-
-            try
-            {
-                client.upload( deployables );
-            }
-            finally
-            {
-                client.close();
-            }
+          credentialsProvider = new BasicCredentialsProvider();
+          credentialsProvider.setCredentials(new AuthScope(proxyServer.getHostName(),
+              proxyServer.getPort(), AuthScope.ANY_REALM, proxyServer.getSchemeName()), proxyCredentials);
         }
-        catch ( IOException e )
-        {
-            throw e;
+      }
+
+      if (!StringUtils.isBlank(zapperRequest.getRemoteUsername())) {
+        UsernamePasswordCredentials remoteCredentials =
+            new UsernamePasswordCredentials(zapperRequest.getRemoteUsername(),
+                zapperRequest.getRemotePassword());
+
+        if (credentialsProvider == null) {
+          credentialsProvider = new BasicCredentialsProvider();
         }
-        catch ( Exception e )
-        {
-            throw new IOException( "Unable to deploy!", e );
-        }
+
+        credentialsProvider.setCredentials(AuthScope.ANY, remoteCredentials);
+      }
+
+      final Parameters parameters = ParametersBuilder.defaults().build();
+      final Hc4ClientBuilder clientBuilder = new Hc4ClientBuilder(parameters, zapperRequest.getRemoteUrl());
+      if (credentialsProvider != null) {
+        clientBuilder.withRealm(credentialsProvider);
+      }
+      if (proxyServer != null) {
+        clientBuilder.withProxy(proxyServer);
+      }
+      final Client client = clientBuilder.build();
+      final IOSourceListable deployables = new DirectoryIOSource(zapperRequest.getStageRepository());
+
+      try {
+        client.upload(deployables);
+      }
+      finally {
+        client.close();
+      }
     }
+    catch (IOException e) {
+      throw e;
+    }
+    catch (Exception e) {
+      throw new IOException("Unable to deploy!", e);
+    }
+  }
 }

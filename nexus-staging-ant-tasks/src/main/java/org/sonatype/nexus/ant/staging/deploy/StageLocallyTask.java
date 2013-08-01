@@ -10,6 +10,7 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.deploy;
 
 import java.util.Iterator;
@@ -20,36 +21,33 @@ import org.apache.tools.ant.types.resources.FileResource;
 
 /**
  * Perform local staging.
- * 
+ *
  * @author cstamas
  */
 public class StageLocallyTask
     extends AbstractDeployTask
 {
-    private FileSet fileSet;
+  private FileSet fileSet;
 
-    public FileSet getFileSet()
-    {
-        return fileSet;
+  public FileSet getFileSet() {
+    return fileSet;
+  }
+
+  public void add(FileSet fileSet) {
+    this.fileSet = fileSet;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public void execute()
+      throws BuildException
+  {
+    log("Staging locally (stagingDirectory=" + getStagingDirectory() + ")...");
+
+    Iterator<FileResource> files = getFileSet().iterator();
+    while (files.hasNext()) {
+      final FileResource file = files.next();
+      stageLocally(file.getBaseDir(), file.getName());
     }
-
-    public void add( FileSet fileSet )
-    {
-        this.fileSet = fileSet;
-    }
-
-    @Override
-    @SuppressWarnings( "unchecked" )
-    public void execute()
-        throws BuildException
-    {
-        log( "Staging locally (stagingDirectory=" + getStagingDirectory() + ")..." );
-
-        Iterator<FileResource> files = getFileSet().iterator();
-        while ( files.hasNext() )
-        {
-            final FileResource file = files.next();
-            stageLocally( file.getBaseDir(), file.getName() );
-        }
-    }
+  }
 }

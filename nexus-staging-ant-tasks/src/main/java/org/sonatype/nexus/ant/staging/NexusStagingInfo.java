@@ -10,13 +10,14 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging;
 
 import java.io.File;
 
 /**
  * DTO for Nexus staging info. Example with all bells and whistles:
- * 
+ *
  * <pre>
  *   &lt;nexusStagingInfo stagingDirectory="/some/path/to/directory" &gt;
  *     &lt;projectInfo groupId="G" artifactId="A" version="V" /&gt;
@@ -28,60 +29,52 @@ import java.io.File;
  *     &lt;/connectionInfo&gt;
  *   &lt;/nexusStagingInfo&gt;
  * </pre>
- * 
+ *
  * @author cstamas
  */
 public class NexusStagingInfo
 {
-    private String refid;
-    
-    private File stagingDirectory;
+  private String refid;
 
-    private ProjectInfo projectInfo;
+  private File stagingDirectory;
 
-    private ConnectionInfo connectionInfo;
+  private ProjectInfo projectInfo;
 
-    // attributes
+  private ConnectionInfo connectionInfo;
 
-    public String getRefid()
-    {
-        return refid;
-    }
+  // attributes
 
-    public void setRefid( String refid )
-    {
-        this.refid = refid;
-    }
+  public String getRefid() {
+    return refid;
+  }
 
-    public File getStagingDirectory()
-    {
-        return stagingDirectory;
-    }
+  public void setRefid(String refid) {
+    this.refid = refid;
+  }
 
-    public void setStagingDirectory( File stagingDirectory )
-    {
-        this.stagingDirectory = stagingDirectory;
-    }
+  public File getStagingDirectory() {
+    return stagingDirectory;
+  }
 
-    // children/refs
+  public void setStagingDirectory(File stagingDirectory) {
+    this.stagingDirectory = stagingDirectory;
+  }
 
-    public ProjectInfo getProjectInfo()
-    {
-        return projectInfo;
-    }
+  // children/refs
 
-    public void add( ProjectInfo projectInfo )
-    {
-        this.projectInfo = projectInfo;
-    }
+  public ProjectInfo getProjectInfo() {
+    return projectInfo;
+  }
 
-    public ConnectionInfo getConnectionInfo()
-    {
-        return connectionInfo;
-    }
+  public void add(ProjectInfo projectInfo) {
+    this.projectInfo = projectInfo;
+  }
 
-    public void add( ConnectionInfo connectionInfo )
-    {
-        this.connectionInfo = connectionInfo;
-    }
+  public ConnectionInfo getConnectionInfo() {
+    return connectionInfo;
+  }
+
+  public void add(ConnectionInfo connectionInfo) {
+    this.connectionInfo = connectionInfo;
+  }
 }

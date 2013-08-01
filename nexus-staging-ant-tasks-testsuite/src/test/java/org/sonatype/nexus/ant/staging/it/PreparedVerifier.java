@@ -10,113 +10,98 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.it;
 
 import java.io.File;
 
+import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
+
+import org.sonatype.nexus.ant.staging.ErrorDumper;
+import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
+
+import com.google.common.base.Preconditions;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.BuildFileTest;
 import org.apache.tools.ant.Task;
 import org.junit.rules.Verifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonatype.nexus.ant.staging.ErrorDumper;
-import org.sonatype.nexus.client.core.exception.NexusClientErrorResponseException;
-
-import com.google.common.base.Preconditions;
-import com.sonatype.nexus.staging.client.StagingRuleFailuresException;
 
 /**
  * A simple "wrapper" class that carried the {@link Verifier} but also some extra data about the project being built by
  * Verifier that makes easier the post-build assertions.
- * 
+ *
  * @author cstamas
  */
 public class PreparedVerifier
     extends BuildFileTest
 {
-    protected final Logger logger = LoggerFactory.getLogger( getClass() );
+  protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final File baseDir;
+  private final File baseDir;
 
-    private final String projectGroupId;
+  private final String projectGroupId;
 
-    private final String projectArtifactId;
+  private final String projectArtifactId;
 
-    private final String projectVersion;
+  private final String projectVersion;
 
-    public PreparedVerifier( final File baseDir, final String buildFileName, final String projectGroupId,
-                             final String projectArtifactId, final String projectVersion )
-    {
-        this.baseDir = Preconditions.checkNotNull( baseDir );
-        this.projectGroupId = Preconditions.checkNotNull( projectGroupId );
-        this.projectArtifactId = Preconditions.checkNotNull( projectArtifactId );
-        this.projectVersion = Preconditions.checkNotNull( projectVersion );
-        configureProject( new File( baseDir, buildFileName ).getAbsolutePath() );
+  public PreparedVerifier(final File baseDir,
+                          final String buildFileName,
+                          final String projectGroupId,
+                          final String projectArtifactId,
+                          final String projectVersion)
+  {
+    this.baseDir = Preconditions.checkNotNull(baseDir);
+    this.projectGroupId = Preconditions.checkNotNull(projectGroupId);
+    this.projectArtifactId = Preconditions.checkNotNull(projectArtifactId);
+    this.projectVersion = Preconditions.checkNotNull(projectVersion);
+    configureProject(new File(baseDir, buildFileName).getAbsolutePath());
+  }
+
+  public File getBaseDir() {
+    return baseDir;
+  }
+
+  public String getProjectGroupId() {
+    return projectGroupId;
+  }
+
+  public String getProjectArtifactId() {
+    return projectArtifactId;
+  }
+
+  public String getProjectVersion() {
+    return projectVersion;
+  }
+
+  @Override
+  public void executeTarget(final String target) {
+    try {
+      super.executeTarget(target);
     }
-
-    public File getBaseDir()
-    {
-        return baseDir;
+    catch (StagingRuleFailuresException e) {
+      ErrorDumper.dumpErrors(new Task() {}, e);
+      throw e;
     }
-
-    public String getProjectGroupId()
-    {
-        return projectGroupId;
+    catch (NexusClientErrorResponseException e) {
+      ErrorDumper.dumpErrors(new Task() {}, e);
+      throw e;
     }
-
-    public String getProjectArtifactId()
-    {
-        return projectArtifactId;
+    catch (BuildException e) {
+      final Throwable c = e.getCause();
+      if (c instanceof StagingRuleFailuresException) {
+        ErrorDumper.dumpErrors(new Task() {}, (StagingRuleFailuresException) c);
+        throw e;
+      }
+      else if (c instanceof NexusClientErrorResponseException) {
+        ErrorDumper.dumpErrors(new Task() {}, (NexusClientErrorResponseException) c);
+        throw e;
+      }
     }
-
-    public String getProjectVersion()
-    {
-        return projectVersion;
+    finally {
+      logger.info(getFullLog());
     }
-
-    @Override
-    public void executeTarget( final String target )
-    {
-        try
-        {
-            super.executeTarget( target );
-        }
-        catch ( StagingRuleFailuresException e )
-        {
-            ErrorDumper.dumpErrors( new Task()
-            {
-            }, e );
-            throw e;
-        }
-        catch ( NexusClientErrorResponseException e )
-        {
-            ErrorDumper.dumpErrors( new Task()
-            {
-            }, e );
-            throw e;
-        }
-        catch ( BuildException e )
-        {
-            final Throwable c = e.getCause();
-            if ( c instanceof StagingRuleFailuresException )
-            {
-                ErrorDumper.dumpErrors( new Task()
-                {
-                }, (StagingRuleFailuresException) c );
-                throw e;
-            }
-            else if ( c instanceof NexusClientErrorResponseException )
-            {
-                ErrorDumper.dumpErrors( new Task()
-                {
-                }, (NexusClientErrorResponseException) c );
-                throw e;
-            }
-        } 
-        finally 
-        {
-	      logger.info( getFullLog() );
-        }
-    }
+  }
 }

@@ -10,119 +10,103 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging.deploy;
 
 import java.io.File;
 
 /**
  * A "zap" request.
- * 
+ *
  * @author cstamas
  * @since 2.1
  */
 public class ZapperRequest
 {
-    private final File stageRepository;
+  private final File stageRepository;
 
-    private final String remoteUrl;
+  private final String remoteUrl;
 
-    private String remoteUsername;
+  private String remoteUsername;
 
-    private String remotePassword;
+  private String remotePassword;
 
-    private String proxyProtocol;
+  private String proxyProtocol;
 
-    private String proxyHost;
+  private String proxyHost;
 
-    private int proxyPort;
+  private int proxyPort;
 
-    private String proxyUsername;
+  private String proxyUsername;
 
-    private String proxyPassword;
+  private String proxyPassword;
 
-    public ZapperRequest( File stageRepository, String remoteUrl )
-    {
-        this.stageRepository = stageRepository;
-        this.remoteUrl = remoteUrl.endsWith( "/" ) ? remoteUrl : remoteUrl + "/";
-    }
+  public ZapperRequest(File stageRepository, String remoteUrl) {
+    this.stageRepository = stageRepository;
+    this.remoteUrl = remoteUrl.endsWith("/") ? remoteUrl : remoteUrl + "/";
+  }
 
-    protected String getRemoteUsername()
-    {
-        return remoteUsername;
-    }
+  protected String getRemoteUsername() {
+    return remoteUsername;
+  }
 
-    protected void setRemoteUsername( String remoteUsername )
-    {
-        this.remoteUsername = remoteUsername;
-    }
+  protected void setRemoteUsername(String remoteUsername) {
+    this.remoteUsername = remoteUsername;
+  }
 
-    protected String getRemotePassword()
-    {
-        return remotePassword;
-    }
+  protected String getRemotePassword() {
+    return remotePassword;
+  }
 
-    protected void setRemotePassword( String remotePassword )
-    {
-        this.remotePassword = remotePassword;
-    }
+  protected void setRemotePassword(String remotePassword) {
+    this.remotePassword = remotePassword;
+  }
 
-    protected String getProxyProtocol()
-    {
-        return proxyProtocol;
-    }
+  protected String getProxyProtocol() {
+    return proxyProtocol;
+  }
 
-    protected void setProxyProtocol( String proxyProtocol )
-    {
-        this.proxyProtocol = proxyProtocol;
-    }
+  protected void setProxyProtocol(String proxyProtocol) {
+    this.proxyProtocol = proxyProtocol;
+  }
 
-    protected String getProxyHost()
-    {
-        return proxyHost;
-    }
+  protected String getProxyHost() {
+    return proxyHost;
+  }
 
-    protected void setProxyHost( String proxyHost )
-    {
-        this.proxyHost = proxyHost;
-    }
+  protected void setProxyHost(String proxyHost) {
+    this.proxyHost = proxyHost;
+  }
 
-    protected int getProxyPort()
-    {
-        return proxyPort;
-    }
+  protected int getProxyPort() {
+    return proxyPort;
+  }
 
-    protected void setProxyPort( int proxyPort )
-    {
-        this.proxyPort = proxyPort;
-    }
+  protected void setProxyPort(int proxyPort) {
+    this.proxyPort = proxyPort;
+  }
 
-    protected String getProxyUsername()
-    {
-        return proxyUsername;
-    }
+  protected String getProxyUsername() {
+    return proxyUsername;
+  }
 
-    protected void setProxyUsername( String proxyUsername )
-    {
-        this.proxyUsername = proxyUsername;
-    }
+  protected void setProxyUsername(String proxyUsername) {
+    this.proxyUsername = proxyUsername;
+  }
 
-    protected String getProxyPassword()
-    {
-        return proxyPassword;
-    }
+  protected String getProxyPassword() {
+    return proxyPassword;
+  }
 
-    protected void setProxyPassword( String proxyPassword )
-    {
-        this.proxyPassword = proxyPassword;
-    }
+  protected void setProxyPassword(String proxyPassword) {
+    this.proxyPassword = proxyPassword;
+  }
 
-    protected File getStageRepository()
-    {
-        return stageRepository;
-    }
+  protected File getStageRepository() {
+    return stageRepository;
+  }
 
-    protected String getRemoteUrl()
-    {
-        return remoteUrl;
-    }
+  protected String getRemoteUrl() {
+    return remoteUrl;
+  }
 }

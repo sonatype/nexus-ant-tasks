@@ -10,52 +10,47 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging;
 
 /**
  * DTO for Nexus connection.
- * 
+ *
  * @author cstamas
  */
 public class ConnectionInfo
 {
-    private String baseUrl;
+  private String baseUrl;
 
-    private Authentication authentication;
+  private Authentication authentication;
 
-    private Proxy proxy;
+  private Proxy proxy;
 
-    // attributes
+  // attributes
 
-    public String getBaseUrl()
-    {
-        return baseUrl;
-    }
+  public String getBaseUrl() {
+    return baseUrl;
+  }
 
-    public void setBaseUrl( String baseUrl )
-    {
-        this.baseUrl = baseUrl;
-    }
+  public void setBaseUrl(String baseUrl) {
+    this.baseUrl = baseUrl;
+  }
 
-    // children/refs
+  // children/refs
 
-    public Authentication getAuthentication()
-    {
-        return authentication;
-    }
+  public Authentication getAuthentication() {
+    return authentication;
+  }
 
-    public void add( Authentication authentication )
-    {
-        this.authentication = authentication;
-    }
+  public void add(Authentication authentication) {
+    this.authentication = authentication;
+  }
 
-    public Proxy getProxy()
-    {
-        return proxy;
-    }
+  public Proxy getProxy() {
+    return proxy;
+  }
 
-    public void add( Proxy proxy )
-    {
-        this.proxy = proxy;
-    }
+  public void add(Proxy proxy) {
+    this.proxy = proxy;
+  }
 }

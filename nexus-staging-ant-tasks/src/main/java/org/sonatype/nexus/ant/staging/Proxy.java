@@ -10,52 +10,47 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging;
 
 /**
  * DTO for proxy to be used for Nexus connection.
- * 
+ *
  * @author cstamas
  */
 public class Proxy
 {
-    private String host;
+  private String host;
 
-    private int port;
+  private int port;
 
-    private Authentication authentication;
+  private Authentication authentication;
 
-    // attributes
+  // attributes
 
-    public String getHost()
-    {
-        return host;
-    }
+  public String getHost() {
+    return host;
+  }
 
-    public void setHost( String host )
-    {
-        this.host = host;
-    }
+  public void setHost(String host) {
+    this.host = host;
+  }
 
-    public int getPort()
-    {
-        return port;
-    }
+  public int getPort() {
+    return port;
+  }
 
-    public void setPort( int port )
-    {
-        this.port = port;
-    }
+  public void setPort(int port) {
+    this.port = port;
+  }
 
-    // children/refs
+  // children/refs
 
-    public Authentication getAuthentication()
-    {
-        return authentication;
-    }
+  public Authentication getAuthentication() {
+    return authentication;
+  }
 
-    public void add( Authentication authentication )
-    {
-        this.authentication = authentication;
-    }
+  public void add(Authentication authentication) {
+    this.authentication = authentication;
+  }
 }

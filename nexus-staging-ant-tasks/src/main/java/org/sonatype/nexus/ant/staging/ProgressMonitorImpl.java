@@ -10,12 +10,14 @@
  * of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the
  * Eclipse Foundation. All other trademarks are the property of their respective owners.
  */
+
 package org.sonatype.nexus.ant.staging;
 
-import com.sonatype.nexus.staging.client.StagingWorkflowV3Service.ProgressMonitor;
-import org.apache.tools.ant.Project;
-
 import java.io.PrintStream;
+
+import com.sonatype.nexus.staging.client.StagingWorkflowV3Service.ProgressMonitor;
+
+import org.apache.tools.ant.Project;
 
 /**
  * Default {@link ProgressMonitor} implementation.
@@ -25,86 +27,86 @@ import java.io.PrintStream;
 public class ProgressMonitorImpl
     implements ProgressMonitor
 {
-    protected final Project project;
+  protected final Project project;
 
-    protected boolean needsNewline;
+  protected boolean needsNewline;
 
-    public ProgressMonitorImpl(final Project project) {
-        this.project = project;
+  public ProgressMonitorImpl(final Project project) {
+    this.project = project;
+  }
+
+  protected PrintStream getOut() {
+    return System.out;
+  }
+
+  protected void maybePrintln() {
+    if (needsNewline) {
+      getOut().println();
+      getOut().flush();
+      needsNewline = false;
     }
+  }
 
-    protected PrintStream getOut() {
-        return System.out;
-    }
+  protected void debug(final String message) {
+    project.log(message, Project.MSG_VERBOSE); // ant debug is more like trace, user verbose instead
+  }
 
-    protected void maybePrintln() {
-        if (needsNewline) {
-            getOut().println();
-            getOut().flush();
-            needsNewline = false;
-        }
-    }
+  protected void warn(final String message) {
+    project.log(message, Project.MSG_WARN);
+  }
 
-    protected void debug(final String message) {
-        project.log(message, Project.MSG_VERBOSE); // ant debug is more like trace, user verbose instead
-    }
+  @Override
+  public void start() {
+    debug("START");
 
-    protected void warn(final String message) {
-        project.log(message, Project.MSG_WARN);
-    }
+    getOut().println();
+    getOut().print("Waiting for operation to complete...");
+    getOut().flush();
+  }
 
-    @Override
-    public void start() {
-        debug("START");
+  @Override
+  public void tick() {
+    debug("TICK");
 
-        getOut().println();
-        getOut().print("Waiting for operation to complete...");
-        getOut().flush();
-    }
+    needsNewline = true;
+    getOut().print(".");
+    getOut().flush();
+  }
 
-    @Override
-    public void tick() {
-        debug("TICK");
+  @Override
+  public void pause() {
+    debug("PAUSE");
+  }
 
-        needsNewline = true;
-        getOut().print(".");
-        getOut().flush();
-    }
+  @Override
+  public void info(final String message) {
+    debug(message);
+  }
 
-    @Override
-    public void pause() {
-        debug("PAUSE");
-    }
+  @Override
+  public void error(final String message) {
+    debug(message);
+  }
 
-    @Override
-    public void info(final String message) {
-        debug(message);
-    }
+  @Override
+  public void stop() {
+    debug("STOP");
 
-    @Override
-    public void error(final String message) {
-        debug(message);
-    }
+    maybePrintln();
 
-    @Override
-    public void stop() {
-        debug("STOP");
+  }
 
-        maybePrintln();
+  @Override
+  public void timeout() {
+    maybePrintln();
 
-    }
+    warn("TIMEOUT");
+  }
 
-    @Override
-    public void timeout() {
-        maybePrintln();
+  @Override
+  public void interrupted() {
+    maybePrintln();
 
-        warn("TIMEOUT");
-    }
-
-    @Override
-    public void interrupted() {
-        maybePrintln();
-
-        warn("INTERRUPTED");
-    }
+    warn("INTERRUPTED");
+  }
 }
