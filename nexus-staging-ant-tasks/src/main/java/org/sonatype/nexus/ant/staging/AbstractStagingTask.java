@@ -58,6 +58,10 @@ public abstract class AbstractStagingTask
    */
   private boolean keepStagingRepositoryOnCloseRuleFailure = false;
 
+  private int stagingProgressTimeoutMinutes = 5;
+
+  private int stagingProgressPauseDurationSeconds = 3;
+
   // attributes
 
   public String getActionMessage() {
@@ -74,6 +78,22 @@ public abstract class AbstractStagingTask
 
   public void setKeepStagingRepositoryOnCloseRuleFailure(boolean keepStagingRepositoryOnCloseRuleFailure) {
     this.keepStagingRepositoryOnCloseRuleFailure = keepStagingRepositoryOnCloseRuleFailure;
+  }
+
+  public int getStagingProgressTimeoutMinutes() {
+    return stagingProgressTimeoutMinutes;
+  }
+
+  public void setStagingProgressTimeoutMinutes(final int stagingProgressTimeoutMinutes) {
+    this.stagingProgressTimeoutMinutes = stagingProgressTimeoutMinutes;
+  }
+
+  public int getStagingProgressPauseDurationSeconds() {
+    return stagingProgressPauseDurationSeconds;
+  }
+
+  public void setStagingProgressPauseDurationSeconds(final int stagingProgressPauseDurationSeconds) {
+    this.stagingProgressPauseDurationSeconds = stagingProgressPauseDurationSeconds;
   }
 
   // children/refs
@@ -224,10 +244,8 @@ public abstract class AbstractStagingTask
 
         // Install progress monitor
         service.setProgressMonitor(new ProgressMonitorImpl(getProject()));
-
-        // FIXME: Expose for configuration
-        //service.setProgressTimeoutMinutes();
-        //service.setProgressPauseDurationSeconds();
+        service.setProgressTimeoutMinutes(getStagingProgressTimeoutMinutes());
+        service.setProgressPauseDurationSeconds(getStagingProgressPauseDurationSeconds());
 
         workflowService = service;
       }
