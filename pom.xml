@@ -149,6 +149,24 @@
         <version>${nexus.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.2.6</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.2.5</version>
+      </dependency>
+
       <!-- Plugins below are used in ITs to preinstall in tested bundle -->
 
       <dependency>
