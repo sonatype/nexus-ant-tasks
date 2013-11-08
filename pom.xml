@@ -149,6 +149,17 @@
         <version>${nexus.version}</version>
       </dependency>
 
+      <!--
+      HACK: force xstream version, litmus has a powermock dep that is pulling in older version:
+        [INFO] |  +- org.powermock:powermock-classloading-xstream:jar:1.5:test
+        [INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.4.2:test
+      -->
+      <dependency>
+        <groupId>com.thoughtworks.xstream</groupId>
+        <artifactId>xstream</artifactId>
+        <version>1.4.5</version>
+      </dependency>
+
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
