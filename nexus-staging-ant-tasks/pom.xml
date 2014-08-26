@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.sonatype.nexus.ant</groupId>
     <artifactId>nexus-ant-tasks</artifactId>
-    <version>1.6.2-SNAPSHOT</version>
+    <version>1.6.2</version>
   </parent>
 
   <artifactId>nexus-staging-ant-tasks</artifactId>
