@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.sonatype.buildsupport</groupId>
     <artifactId>public-parent</artifactId>
-    <version>5</version>
+    <version>6</version>
   </parent>
 
   <groupId>org.sonatype.nexus.ant</groupId>
@@ -42,10 +42,9 @@
   </scm>
 
   <properties>
-    <nexus.version>2.7.0-02</nexus.version>
-    <sisu-inject.version>2.3.0</sisu-inject.version>
-    <slf4j.version>1.6.4</slf4j.version>
-    <logback.version>1.0.5</logback.version>
+    <nexus.version>2.9.1-02</nexus.version>
+    <slf4j.version>1.7.5</slf4j.version>
+    <logback.version>1.1.2</logback.version>
     <maven.version>3.0.4</maven.version>
     <ant.version>1.8.4</ant.version>
 
@@ -59,34 +58,34 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.sonatype.sisu</groupId>
-        <artifactId>sisu-inject-bean</artifactId>
-        <version>${sisu-inject.version}</version>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.inject</artifactId>
+        <version>0.2.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.plexus</artifactId>
+        <version>0.2.1</version>
       </dependency>
 
       <dependency>
         <groupId>org.sonatype.sisu</groupId>
         <artifactId>sisu-guice</artifactId>
-        <version>3.1.1</version>
+        <version>3.1.10</version>
         <classifier>no_aop</classifier>
       </dependency>
 
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>10.0.1</version>
+        <version>14.0.1</version>
       </dependency>
 
       <dependency>
         <groupId>javax.inject</groupId>
         <artifactId>javax.inject</artifactId>
         <version>1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.sonatype.sisu</groupId>
-        <artifactId>sisu-inject-plexus</artifactId>
-        <version>${sisu-inject.version}</version>
       </dependency>
 
       <dependency>
@@ -154,10 +153,11 @@
         [INFO] |  +- org.powermock:powermock-classloading-xstream:jar:1.5:test
         [INFO] |  |  \- com.thoughtworks.xstream:xstream:jar:1.4.2:test
       -->
+      <!-- Using latest to fix NEXUS-6836: Xstream on java8 -->
       <dependency>
         <groupId>com.thoughtworks.xstream</groupId>
         <artifactId>xstream</artifactId>
-        <version>1.4.5</version>
+        <version>1.4.7</version>
       </dependency>
 
       <dependency>
@@ -218,7 +218,7 @@
       <dependency>
         <groupId>org.sonatype.sisu.litmus</groupId>
         <artifactId>litmus-testsupport</artifactId>
-        <version>1.7</version>
+        <version>1.9</version>
       </dependency>
 
       <dependency>

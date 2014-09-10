@@ -181,11 +181,11 @@ public abstract class AbstractDeployTask
             new ProfileMatchingParameters(getProjectInfo().getGroupId(), getProjectInfo().getArtifactId(),
                 getProjectInfo().getVersion());
         stagingProfile = stagingService.matchProfile(params);
-        log(" * Using staging profile ID \"" + stagingProfile.getId() + "\" (matched by Nexus).");
+        log(" * Using staging profile ID \"" + stagingProfile.id() + "\" (matched by Nexus).");
       }
       else {
         stagingProfile = stagingService.selectProfile(getTargetedStagingProfileId());
-        log(" * Using staging profile ID \"" + stagingProfile.getId() + "\" (configured by user).");
+        log(" * Using staging profile ID \"" + stagingProfile.id() + "\" (configured by user).");
       }
 
       if (StringUtils.isBlank(getTargetedStagingRepositoryId())) {
@@ -246,7 +246,7 @@ public abstract class AbstractDeployTask
         // the staging repository ID where the staging went
         stagingProperties.put(STAGING_REPOSITORY_ID, stagingRepositoryId);
         // the staging repository's profile ID where the staging went
-        stagingProperties.put(STAGING_REPOSITORY_PROFILE_ID, stagingProfile.getId());
+        stagingProperties.put(STAGING_REPOSITORY_PROFILE_ID, stagingProfile.id());
         // the staging repository URL (if closed! see below)
         stagingProperties.put(STAGING_REPOSITORY_URL, stagingRepositoryUrl);
         // targeted repo mode or not (are we closing it or someone else? If false, the URL above might not yet
