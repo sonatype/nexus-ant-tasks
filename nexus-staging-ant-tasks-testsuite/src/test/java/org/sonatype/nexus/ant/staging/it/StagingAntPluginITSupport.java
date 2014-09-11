@@ -181,7 +181,7 @@ public abstract class StagingAntPluginITSupport
     final List<Profile> profiles = stagingWorkflow.listProfiles();
     for (Profile profile : profiles) {
       final List<StagingRepository> stagingRepositories =
-          stagingWorkflow.listStagingRepositories(profile.getId());
+          stagingWorkflow.listStagingRepositories(profile.id());
       result.addAll(stagingRepositories);
     }
     return result;
@@ -192,7 +192,7 @@ public abstract class StagingAntPluginITSupport
    */
   protected List<StagingRepository> getProfileStagingRepositories(final Profile profile) {
     List<StagingRepository> stagingRepositories =
-        getStagingWorkflowService().listStagingRepositories(profile.getId());
+        getStagingWorkflowService().listStagingRepositories(profile.id());
     return stagingRepositories;
   }
 
